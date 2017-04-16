@@ -1,7 +1,7 @@
 ---
 en:
   about:
-    about_mastodon: Mastodon is a <em>free, open-source</em> social network. A <em>decentralized</em> alternative to commercial platforms, it avoids the risks of a single company monopolizing your communication. Pick a server that you trust &mdash; whichever you choose, you can interact with everyone else. Anyone can run their own Mastodon instance and participate in the <em>social network</em> seamlessly.
+    about_mastodon: Kirakiratter is a <a href="https://mastodon.social/about">Mastodon</a> instance.
     about_this: About this instance
     apps: Apps
     business_email: 'Business e-mail:'
@@ -152,7 +152,7 @@ en:
     didnt_get_confirmation: Didn't receive confirmation instructions?
     forgot_password: Forgot your password?
     login: Log in
-    logout: Logout
+    logout: Log out
     register: Sign up
     resend_confirmation: Resend confirmation instructions
     reset_password: Reset password
@@ -262,7 +262,7 @@ en:
     view: View
   settings:
     authorized_apps: Authorized apps
-    back: Back to Mastodon
+    back: Back to Kirakiratter
     edit_profile: Edit profile
     export: Data export
     import: Import
