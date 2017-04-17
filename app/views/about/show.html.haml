@@ -1,5 +1,5 @@
 - content_for :header_tags do
-  = javascript_include_tag 'application_public'
+  = javascript_include_tag 'application_public', integrity: true
 
 - content_for :page_title do
   = Rails.configuration.x.local_domain
@@ -17,7 +17,7 @@
 .wrapper
   %h1
     = image_tag 'logo.png'
-    Kirakiratter
+    = Setting.site_title
 
   %p= t('about.about_mastodon').html_safe
 
@@ -49,6 +49,6 @@
       ·
       = link_to t('about.apps'), 'https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/Apps.md'
       ·
-      = link_to t('about.source_code'), 'https://github.com/tootsuite/mastodon'
+      = link_to t('about.source_code'), 'https://github.com/kirakiratter/mastodon'
       ·
       = link_to t('about.other_instances'), 'https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/List-of-Mastodon-instances.md'
