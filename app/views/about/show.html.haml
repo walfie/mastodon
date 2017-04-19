@@ -2,14 +2,14 @@
   = javascript_include_tag 'application_public', integrity: true
 
 - content_for :page_title do
-  = Rails.configuration.x.local_domain
+  = site_hostname
 
 - content_for :header_tags do
   %meta{ property: 'og:site_name', content: site_title }/
   %meta{ property: 'og:type', content: 'website' }/
-  %meta{ property: 'og:title', content: Rails.configuration.x.local_domain }/
-  %meta{ property: 'og:description', content: strip_tags(@instance_presenter.site_description.blank? ? t('about.about_mastodon') : @instance_presenter.site_description) }/
-  %meta{ property: 'og:image', content: asset_url('kirakiratter-rabbit.png') }/
+  %meta{ property: 'og:title', content: site_hostname }/
+  %meta{ property: 'og:description', content: strip_tags(@instance_presenter.site_description.presence || t('about.about_mastodon')) }/
+  %meta{ property: 'og:image', content: asset_url('kirakiratter-rabbit.jpg') }/
   %meta{ property: 'og:image:width', content: '400' }/
   %meta{ property: 'og:image:height', content: '400' }/
   %meta{ property: 'twitter:card', content: 'summary' }/
@@ -40,7 +40,7 @@
           = link_to t('about.about_this'), about_more_path
 
   - unless @instance_presenter.site_description.blank?
-    %h3= t('about.description_headline', domain: Rails.configuration.x.local_domain)
+    %h3= t('about.description_headline', domain: site_hostname)
     %p= @instance_presenter.site_description.html_safe
 
   .actions
