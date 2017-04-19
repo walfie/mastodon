@@ -51,7 +51,7 @@ const en = {
   "follow_request.reject": "Reject",
   "getting_started.apps": "Various apps are available",
   "getting_started.heading": "Getting started",
-  "getting_started.open_source_notice": "Mastodon is open source software. You can contribute or report issues on GitHub at {github}. {apps}.",
+  "getting_started.open_source_notice": "Kirakiratter is open source software. You can contribute or report issues on GitHub at {github}. {apps}.",
   "home.column_settings.advanced": "Advanced",
   "home.column_settings.basic": "Basic",
   "home.column_settings.filter_regex": "Filter out by regular expressions",
