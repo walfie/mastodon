@@ -14,7 +14,8 @@ const messages = defineMessages({
   home_title: { id: 'column.home', defaultMessage: 'Home' },
   notifications_title: { id: 'column.notifications', defaultMessage: 'Notifications' },
   local_title: { id: 'column.community', defaultMessage: 'Local timeline' },
-  federated_title: { id: 'column.public', defaultMessage: 'Federated timeline' }
+  federated_title: { id: 'column.public', defaultMessage: 'Federated timeline' },
+  example_tweet: { id: 'onboarding.page_two.example', defaultMessage: 'Awoo! #introductions' },
 });
 
 const PageOne = ({ acct, domain }) => (
@@ -36,11 +37,11 @@ PageOne.propTypes = {
   domain: React.PropTypes.string.isRequired
 };
 
-const PageTwo = () => (
+const PageTwo = ({ intl }) => (
   <div className='onboarding-modal__page onboarding-modal__page-two'>
     <div className='figure non-interactive'>
       <ComposeForm
-        text='Awoo! #introductions'
+        text={intl.formatMessage(messages.example_tweet)}
         suggestions={Immutable.List()}
         mentionedDomains={[]}
         onChange={() => {}}
@@ -58,6 +59,10 @@ const PageTwo = () => (
   </div>
 );
 
+PageTwo.propTypes = {
+  intl: React.PropTypes.object.isRequired
+};
+
 const PageThree = ({ me, domain }) => (
   <div className='onboarding-modal__page onboarding-modal__page-three'>
     <div className='figure non-interactive'>
@@ -74,7 +79,7 @@ const PageThree = ({ me, domain }) => (
       </div>
     </div>
 
-    <p><FormattedMessage id='onboarding.page_three.search' defaultMessage='Use the search bar to find people and look at hashtags, such as {illustration} and {introductions}. To look for a person who is not on this instance, use their full handle.' values={{ illustration: <Permalink to='/timelines/tag/illustration' href='/tags/illustration'>#illustration</Permalink>, introductions: <Permalink to='/timelines/tag/introductions' href='/tags/introductions'>#introductions</Permalink> }}/></p>
+    <p><FormattedMessage id='onboarding.page_three.search' defaultMessage='Use the search bar to find people and look at hashtags, such as {illustration} and {introductions}. To look for a person who is not on this instance, use their full handle.' values={{ illustration: <Permalink to='/timelines/tag/&#33258;&#24049;&#32057;&#20171;' href='/tags/&#33258;&#24049;&#32057;&#20171;'>&#35;&#33258;&#24049;&#32057;&#20171;</Permalink>, introductions: <Permalink to='/timelines/tag/introductions' href='/tags/introductions'>#introductions</Permalink> }}/></p>
     <p><FormattedMessage id='onboarding.page_three.profile' defaultMessage='Edit your profile to change your avatar, bio, and display name. There, you will also find other preferences.' /></p>
   </div>
 );
@@ -195,7 +200,7 @@ const OnboardingModal = React.createClass({
 
     const pages = [
       <PageOne acct={me.get('acct')} domain={domain} />,
-      <PageTwo />,
+      <PageTwo intl={intl} />,
       <PageThree me={me} domain={domain} />,
       <PageFour domain={domain} intl={intl} />,
       <PageSix admin={admin} />
@@ -209,7 +214,7 @@ const OnboardingModal = React.createClass({
     if(hasMore) {
       nextOrDoneBtn = <a href='#' onClick={this.handleNext.bind(null, pages.length)} className='onboarding-modal__nav onboarding-modal__next'><FormattedMessage id='onboarding.next' defaultMessage='Next' /></a>;
     } else {
-      nextOrDoneBtn = <a href='#' onClick={this.handleNext.bind(null, pages.length)} className='onboarding-modal__nav onboarding-modal__done'><FormattedMessage id='onboarding.next' defaultMessage='Done' /></a>;
+      nextOrDoneBtn = <a href='#' onClick={this.handleNext.bind(null, pages.length)} className='onboarding-modal__nav onboarding-modal__done'><FormattedMessage id='onboarding.done' defaultMessage='Done' /></a>;
     }
 
     const styles = pages.map((page, i) => ({
