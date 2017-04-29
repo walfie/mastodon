@@ -140,7 +140,6 @@ RSpec.describe Status, type: :model do
     end
   end
 
->>>>>>> v1.3.2
   describe '.as_home_timeline' do
     before do
       account = Fabricate(:account)
@@ -285,5 +284,4 @@ RSpec.describe Status, type: :model do
       expect(results).to include(status)
     end
   end
->>>>>>> v1.3.2
 end
