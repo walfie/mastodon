@@ -1,5 +1,5 @@
 /*
-  Mastodon: Kirakiratter Custom CSS V9.2
+  Mastodon: Kirakiratter Custom CSS V9.1
   By Salil Gupta (@MasterDalK)
   Other Contributors: @pomo, @sumire, @bitmap, @hisagi, @lae, @takenoko, @unarist
 
@@ -405,8 +405,7 @@ p, /* Katswoots -- Posts, Tweets, Katsus, TOOTS, take your pick. */
 .pagination .page.gap,
 .report__target strong, /* User Reports */
 .report__textarea,
-.account-authorize .account__header__content, /* Follow Requests */
-.account-card .account__header__content p /* Remote Follow */ {
+.account-authorize .account__header__content /* Follow Requests */ {
   color: #7b5d4d;
 }
 
@@ -475,9 +474,7 @@ a[href*='/tags/'] span, /* Hashtag Fix */
 .compact-header h1 a,
 .oauth-prompt strong, /* 2FA */
 .follow-prompt strong,
-.filters .filter-subset a.selected,
-.account-card .detailed-status__display-name .display-name strong, /* Remote Follow */
-.account-card .account__header__content a span {
+.filters .filter-subset a.selected {
   color: #ed649c;
   text-decoration: none;
 }
@@ -507,8 +504,7 @@ a[href*='/tags/'] span:hover,
 .activity-stream .detailed-status.light .status__content a:hover,
 .activity-stream .pre-header .status__display-name.muted strong:hover,
 .activity-stream .detailed-status.light .status__content a.hashtag:hover,
-.compose-form__warning a:hover,
-.account-card .detailed-status__display-name .display-name strong:hover {
+.compose-form__warning a:hover {
   text-decoration: underline;
 }
 
@@ -552,8 +548,7 @@ a span, /* Toots */
 .activity-stream .status.light .status__header .status__meta .status__relative-time,
 .activity-stream .detailed-status.light .detailed-status__display-name .display-name span,
 .simple_form span.hint, /* Settings */
-.report__target,
-.account-card .detailed-status__display-name .display-name span /* Remote Follow */ {
+.report__target {
   color: #8e9956;
 }
 
@@ -917,12 +912,17 @@ div.drawer__inner div:not(.navigation-bar) div:last-child div:last-child div:nth
 }
 
 /* Profile Column */
-
-.account__action-bar-dropdown {
-  -webkit-box-flex: none;
-  -ms-flex: none;
-  flex: none;
+.dropdown {
   width: 32px;
+}
+
+.account__action-bar div:first-child {
+  max-width: 32px;
+}
+
+.account__action-bar div:last-child {
+  max-width: calc(86% - 32px);
+  justify-content: space-between;
 }
 
 .account__action-bar {
@@ -931,9 +931,6 @@ div.drawer__inner div:not(.navigation-bar) div:last-child div:last-child div:nth
 }
 
 .account__action-bar__tab {
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   border-left: 1px solid rgba(0, 0, 0, 0.6);
 }
 
@@ -1665,13 +1662,10 @@ a.table-action-link:hover {
 
 /* OAuth, Remote follow */
 
-.form-container,
-.account-card {
-  background: -webkit-linear-gradient(top, #fcfce1 0%, #fcfce1 65%, #fcfce1 65%, #f9f0ae 100%);
-  background: linear-gradient(to bottom, #fcfce1 0%, #fcfce1 65%, #fcfce1 65%, #f9f0ae 100%);
+.form-container {
+  background: linear-gradient(to bottom, rgba(252, 252, 225, 1) 0%, rgba(252, 252, 225, 1) 65%, rgba(252, 252, 225, 1) 65%, rgba(249, 240, 174, 1) 100%);
   border-radius: 8px;
   border: solid 2px #e1c152;
-  box-shadow: none;
 }
 
 .form-container .flash-message code {
@@ -1693,3 +1687,4 @@ a.table-action-link:hover {
 .filters .filter-subset a.selected {
   border-color: #ed649c;
 }
+
