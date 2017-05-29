@@ -1808,7 +1808,7 @@
 .getting-started {
   box-sizing: border-box;
   padding-bottom: 235px;
-  background: url('../images/kirakiratter-getting-started.png') no-repeat 0 100%;
+  background: url('../images/kirakiratter-getting-started.png') no-repeat 0 100%/contain local;
   flex: 1 0 auto;
 
   p {

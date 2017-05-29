@@ -2,10 +2,10 @@
 
 module StyleHelper
   def stylesheet_for_layout
-    theme_asset = "#{site_theme_for_user}.css"
+    theme_pack = "theme_#{site_theme_for_user}.css"
 
-    if asset_exist?(theme_asset)
-      theme_asset
+    if asset_exist? theme_pack
+      theme_pack
     elsif asset_exist? 'custom.css'
       'custom'
     else
