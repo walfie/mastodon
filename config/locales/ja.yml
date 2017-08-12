@@ -28,8 +28,8 @@ ja:
     learn_more: もっと詳しく
     other_instances: 他のインスタンス
     source_code: ソースコード
-    status_count_after: トゥート
-    status_count_before: トゥート数
+    status_count_after: カツ
+    status_count_before: カツ数
     user_count_after: 人
     user_count_before: ユーザー数
     what_is_mastodon: Mastodon とは？
@@ -37,6 +37,8 @@ ja:
     follow: フォロー
     followers: フォロワー
     following: フォロー中
+    media: メディア
+    medium: "%{name} さんのメディア"
     nothing_here: 何もありません
     people_followed_by: "%{name} さんがフォロー中のアカウント"
     people_who_follow: "%{name} さんをフォロー中のアカウント"
@@ -91,7 +93,7 @@ ja:
         report: レポート
         targeted_reports: このアカウントについてのレポート
       silence: サイレンス
-      statuses: トゥート数
+      statuses: カツ数
       subscribe: 購読する
       title: アカウント
       undo_silenced: サイレンスから戻す
@@ -108,7 +110,7 @@ ja:
         create: ブロックを作成
         hint: ドメインブロックはデータベース中のアカウント項目の作成を妨げませんが、遡って自動的に指定されたモデレーションをそれらのアカウントに適用します。
         severity:
-          desc_html: "<strong>サイレンス</strong>はアカウントのトゥートをフォローしていない人から隠します。<strong>停止</strong>はそのアカウントのコンテンツ、メディア、プロフィールデータをすべて削除します。"
+          desc_html: "<strong>サイレンス</strong>はアカウントのカツをフォローしていない人から隠します。<strong>停止</strong>はそのアカウントのコンテンツ、メディア、プロフィールデータをすべて削除します。"
           noop: なし
           silence: サイレンス
           suspend: 停止
@@ -200,7 +202,7 @@ ja:
         show: メディアを表示
         title: メディア
       no_media: メディアなし
-      title: トゥート一覧
+      title: カツ一覧
       with_media: メディアあり
     subscriptions:
       callback_url: コールバックURL
@@ -324,8 +326,8 @@ ja:
         one: "新しい1件の通知 \U0001F418"
         other: "新しい%{count}件の通知 \U0001F418"
     favourite:
-      body: 'あなたのトゥートが %{name} さんにお気に入り登録されました:'
-      subject: "%{name} さんがあなたのトゥートをお気に入りに登録しました"
+      body: 'あなたのカツが %{name} さんにお気に入り登録されました:'
+      subject: "%{name} さんがあなたのカツをお気に入りに登録しました"
     follow:
       body: "%{name} さんにフォローされています"
       subject: "%{name} さんにフォローされています"
@@ -336,15 +338,15 @@ ja:
       body: "%{name} さんから返信がありました:"
       subject: "%{name} さんに返信されました"
     reblog:
-      body: 'あなたのトゥートが %{name} さんにブーストされました:'
-      subject: あなたのトゥートが %{name} さんにブーストされました
+      body: 'あなたのカツが %{name} さんにブーストされました:'
+      subject: あなたのカツが %{name} さんにブーストされました
   pagination:
     next: 次
     prev: 前
     truncate: "&hellip;"
   push_notifications:
     favourite:
-      title: あなたのトゥートが %{name} さんにお気に入り登録されました
+      title: あなたのカツが %{name} さんにお気に入り登録されました
     follow:
       title: "%{name} さんにフォローされました"
     group:
@@ -355,7 +357,7 @@ ja:
       action_favourite: お気に入り
       title: "%{name} さんから返信がありました"
     reblog:
-      title: あなたのトゥートが %{name} さんにブーストされました
+      title: あなたのカツが %{name} さんにブーストされました
     subscribed:
       body: あなたはプッシュ通知を受け取ることが出来ます
       title: Subscription が登録されました
@@ -414,6 +416,9 @@ ja:
     preferences: ユーザー設定
     settings: 設定
     two_factor_authentication: 二段階認証
+  site_theme:
+    default: Mastodon
+    kkt: kktCSS
   statuses:
     open_in_web: Webで開く
     over_character_limit: 上限は %{max}文字までです
