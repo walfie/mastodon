@@ -19,6 +19,7 @@ const messages = defineMessages({
   notifications_title: { id: 'column.notifications', defaultMessage: 'Notifications' },
   local_title: { id: 'column.community', defaultMessage: 'Local timeline' },
   federated_title: { id: 'column.public', defaultMessage: 'Federated timeline' },
+  example_status: { id: 'onboarding.page_two.example', defaultMessage: 'Awoo! #introductions' },
 });
 
 const PageOne = ({ acct, domain }) => (
@@ -40,14 +41,14 @@ PageOne.propTypes = {
   domain: PropTypes.string.isRequired,
 };
 
-const PageTwo = ({ me }) => (
+const PageTwo = ({ intl, me }) => (
   <div className='onboarding-modal__page onboarding-modal__page-two'>
     <div className='figure non-interactive'>
       <div className='pseudo-drawer'>
         <NavigationBar account={me} />
       </div>
       <ComposeForm
-        text='Awoo! #introductions'
+        text={intl.formatMessage(messages.example_status)}
         suggestions={ImmutableList()}
         mentionedDomains={[]}
         spoiler={false}
@@ -68,6 +69,7 @@ const PageTwo = ({ me }) => (
 );
 
 PageTwo.propTypes = {
+  intl: React.PropTypes.object.isRequired,
   me: ImmutablePropTypes.map.isRequired,
 };
 
@@ -87,7 +89,7 @@ const PageThree = ({ me }) => (
       </div>
     </div>
 
-    <p><FormattedMessage id='onboarding.page_three.search' defaultMessage='Use the search bar to find people and look at hashtags, such as {illustration} and {introductions}. To look for a person who is not on this instance, use their full handle.' values={{ illustration: <Permalink to='/timelines/tag/illustration' href='/tags/illustration'>#illustration</Permalink>, introductions: <Permalink to='/timelines/tag/introductions' href='/tags/introductions'>#introductions</Permalink> }} /></p>
+    <p><FormattedMessage id='onboarding.page_three.search' defaultMessage='Use the search bar to find people and look at hashtags, such as {illustration} and {introductions}. To look for a person who is not on this instance, use their full handle.' values={{ illustration: <Permalink to='/timelines/tag/&#33258;&#24049;&#32057;&#20171;' href='/tags/&#33258;&#24049;&#32057;&#20171;'>&#35;&#33258;&#24049;&#32057;&#20171;</Permalink>, introductions: <Permalink to='/timelines/tag/introductions' href='/tags/introductions'>#introductions</Permalink> }}/></p>
     <p><FormattedMessage id='onboarding.page_three.profile' defaultMessage='Edit your profile to change your avatar, bio, and display name. There, you will also find other preferences.' /></p>
   </div>
 );
@@ -186,7 +188,7 @@ export default class OnboardingModal extends React.PureComponent {
     const { me, admin, domain, intl } = this.props;
     this.pages = [
       <PageOne acct={me.get('acct')} domain={domain} />,
-      <PageTwo me={me} />,
+      <PageTwo intl={intl} me={me} />,
       <PageThree me={me} />,
       <PageFour domain={domain} intl={intl} />,
       <PageSix admin={admin} domain={domain} />,
