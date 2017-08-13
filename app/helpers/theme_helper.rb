@@ -19,7 +19,8 @@ module ThemeHelper
 
   THEME_COLORS = {
     'default' => '#282c37',
-    'kkt' => '#df57a4'
+    'kkt' => '#df57a4',
+    'loligothic' => '#5f4bb4'
   }.freeze
 
   # For Android tab color
@@ -33,4 +34,3 @@ module ThemeHelper
     false
   end
 end
-
