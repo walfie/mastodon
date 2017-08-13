@@ -419,7 +419,6 @@ ja:
   site_theme:
     default: Mastodon
     kkt: kktCSS
-    loligothic: ロリゴシック
   statuses:
     open_in_web: Webで開く
     over_character_limit: 上限は %{max}文字までです

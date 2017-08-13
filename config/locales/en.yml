@@ -421,7 +421,6 @@ en:
   site_theme:
     default: Mastodon
     kkt: kktCSS
-    loligothic: LoLi GoThiC
   statuses:
     open_in_web: Open in web
     over_character_limit: character limit of %{max} exceeded
