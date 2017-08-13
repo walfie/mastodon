@@ -100,6 +100,10 @@ class User < ApplicationRecord
     settings.auto_play_gif
   end
 
+  def setting_site_theme
+    settings.site_theme
+  end
+
   def setting_system_font_ui
     settings.system_font_ui
   end
