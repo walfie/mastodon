@@ -43,7 +43,7 @@ module SettingsHelper
     HashObject.new(hash)
   end
 
-  SITE_THEMES = ['default', 'kkt'].freeze
+  SITE_THEMES = ['default', 'kkt', 'loligothic'].freeze
 
   def site_themes
     SITE_THEMES
