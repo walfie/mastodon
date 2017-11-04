@@ -69,7 +69,7 @@ const PageTwo = ({ intl, me }) => (
 );
 
 PageTwo.propTypes = {
-  intl: React.PropTypes.object.isRequired,
+  intl: PropTypes.object.isRequired,
   me: ImmutablePropTypes.map.isRequired,
 };
 
