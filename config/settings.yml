@@ -13,7 +13,6 @@ defaults: &defaults
   site_terms: ''
   site_contact_username: ''
   site_contact_email: ''
-  site_theme: 'kkt' # Default to kktCSS
   open_registrations: true
   closed_registrations_message: ''
   open_deletion: true
@@ -26,7 +25,7 @@ defaults: &defaults
   reduce_motion: false
   system_font_ui: false
   noindex: false
-  theme: 'default'
+  theme: 'kkt'
   notification_emails:
     follow: false
     reblog: false

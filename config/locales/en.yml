@@ -589,6 +589,7 @@ en:
     title: "%{instance} Terms of Service and Privacy Policy"
   themes:
     default: Mastodon
+    ktt: kktCSS
   time:
     formats:
       default: "%b %d, %Y, %H:%M"

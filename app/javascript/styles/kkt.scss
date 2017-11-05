@@ -7,24 +7,24 @@
 //  Feature Requests & Bug Reports: https://github.com/MasterDalK/kktCSS
 //  Feature Requests & Bug Reports: #kktCSS on https://kirakiratter.com
 
-@import 'mixins';
-@import 'variables';
+@import 'kkt/mixins';
+@import 'kkt/variables';
 @import 'fonts/roboto';
 @import 'fonts/roboto-mono';
 @import 'fonts/montserrat';
 
-@import 'reset';
-@import 'basics';
-@import 'containers';
-@import 'lists';
-@import 'footer';
-@import 'compact_header';
-@import 'landing_strip';
-@import 'forms';
-@import 'accounts';
-@import 'stream_entries';
-@import 'components';
-@import 'about';
-@import 'tables';
-@import 'admin';
-@import 'rtl';
+@import 'kkt/reset';
+@import 'kkt/basics';
+@import 'kkt/containers';
+@import 'kkt/lists';
+@import 'kkt/footer';
+@import 'kkt/compact_header';
+@import 'kkt/landing_strip';
+@import 'kkt/forms';
+@import 'kkt/accounts';
+@import 'kkt/stream_entries';
+@import 'kkt/components';
+@import 'kkt/about';
+@import 'kkt/tables';
+@import 'kkt/admin';
+@import 'kkt/rtl';
