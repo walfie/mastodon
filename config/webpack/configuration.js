@@ -27,13 +27,16 @@ function formatPublicPath(host = '', path = '') {
 
 const output = {
   path: resolve('public', settings.public_output_path),
-  publicPath: formatPublicPath(env.ASSET_HOST, settings.public_output_path),
+  publicPath: formatPublicPath(env.CDN_HOST, settings.public_output_path),
 };
 
 module.exports = {
   settings,
   themes,
-  env,
+  env: {
+    CDN_HOST: env.CDN_HOST,
+    NODE_ENV: env.NODE_ENV,
+  },
   loadersDir,
   output,
 };

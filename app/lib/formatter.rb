@@ -9,7 +9,7 @@ class Formatter
 
   include ActionView::Helpers::TextHelper
 
-  def format(status, options = {})
+  def format(status, **options)
     if status.reblog?
       prepend_reblog = status.reblog.account.acct
       status         = status.proper
@@ -18,6 +18,8 @@ class Formatter
     end
 
     raw_content = status.text
+
+    return '' if raw_content.blank?
 
     unless status.local?
       html = reformat(raw_content)
@@ -49,13 +51,9 @@ class Formatter
     strip_tags(text)
   end
 
-  def simplified_format(account)
-    return reformat(account.note).html_safe unless account.local? # rubocop:disable Rails/OutputSafety
-
-    html = encode_and_link_urls(account.note)
-    html = simple_format(html, {}, sanitize: false)
-    html = html.delete("\n")
-
+  def simplified_format(account, **options)
+    html = account.local? ? linkify(account.note) : reformat(account.note)
+    html = encode_custom_emojis(html, account.emojis) if options[:custom_emojify]
     html.html_safe # rubocop:disable Rails/OutputSafety
   end
 
@@ -69,23 +67,56 @@ class Formatter
     html.html_safe # rubocop:disable Rails/OutputSafety
   end
 
+  def format_display_name(account, **options)
+    html = encode(account.display_name.presence || account.username)
+    html = encode_custom_emojis(html, account.emojis) if options[:custom_emojify]
+    html.html_safe # rubocop:disable Rails/OutputSafety
+  end
+
+  def format_field(account, str, **options)
+    return reformat(str).html_safe unless account.local? # rubocop:disable Rails/OutputSafety
+    html = encode_and_link_urls(str, me: true)
+    html = encode_custom_emojis(html, account.emojis) if options[:custom_emojify]
+    html.html_safe # rubocop:disable Rails/OutputSafety
+  end
+
+  def linkify(text)
+    html = encode_and_link_urls(text)
+    html = simple_format(html, {}, sanitize: false)
+    html = html.delete("\n")
+
+    html.html_safe # rubocop:disable Rails/OutputSafety
+  end
+
   private
 
   def encode(html)
     HTMLEntities.new.encode(html)
   end
 
-  def encode_and_link_urls(html, accounts = nil)
+  def encode_and_link_urls(html, accounts = nil, options = {})
     entities = Extractor.extract_entities_with_indices(html, extract_url_without_protocol: false)
+
+    if accounts.is_a?(Hash)
+      options  = accounts
+      accounts = nil
+    end
 
     rewrite(html.dup, entities) do |entity|
       if entity[:url]
-        link_to_url(entity)
+        link_to_url(entity, options)
       elsif entity[:hashtag]
         link_to_hashtag(entity)
       elsif entity[:screen_name]
         link_to_mention(entity, accounts)
       end
+    end
+  end
+
+  def count_tag_nesting(tag)
+    if tag[1] == '/' then -1
+    elsif tag[-2] == '/' then 0
+    else 1
     end
   end
 
@@ -95,14 +126,15 @@ class Formatter
     emoji_map = emojis.map { |e| [e.shortcode, full_asset_url(e.image.url(:static))] }.to_h
 
     i                     = -1
-    inside_tag            = false
+    tag_open_index        = nil
     inside_shortname      = false
     shortname_start_index = -1
+    invisible_depth       = 0
 
     while i + 1 < html.size
       i += 1
 
-      if inside_shortname && html[i] == ':'
+      if invisible_depth.zero? && inside_shortname && html[i] == ':'
         shortcode = html[shortname_start_index + 1..i - 1]
         emoji     = emoji_map[shortcode]
 
@@ -116,12 +148,18 @@ class Formatter
         end
 
         inside_shortname = false
-      elsif inside_tag && html[i] == '>'
-        inside_tag = false
+      elsif tag_open_index && html[i] == '>'
+        tag = html[tag_open_index..i]
+        tag_open_index = nil
+        if invisible_depth.positive?
+          invisible_depth += count_tag_nesting(tag)
+        elsif tag == '<span class="invisible">'
+          invisible_depth = 1
+        end
       elsif html[i] == '<'
-        inside_tag       = true
+        tag_open_index   = i
         inside_shortname = false
-      elsif !inside_tag && html[i] == ':'
+      elsif !tag_open_index && html[i] == ':'
         inside_shortname      = true
         shortname_start_index = i
       end
@@ -153,11 +191,13 @@ class Formatter
     result.flatten.join
   end
 
-  def link_to_url(entity)
-    normalized_url = Addressable::URI.parse(entity[:url]).normalize
-    html_attrs     = { target: '_blank', rel: 'nofollow noopener' }
+  def link_to_url(entity, options = {})
+    url        = Addressable::URI.parse(entity[:url])
+    html_attrs = { target: '_blank', rel: 'nofollow noopener' }
 
-    Twitter::Autolink.send(:link_to_text, entity, link_html(entity[:url]), normalized_url, html_attrs)
+    html_attrs[:rel] = "me #{html_attrs[:rel]}" if options[:me]
+
+    Twitter::Autolink.send(:link_to_text, entity, link_html(entity[:url]), url, html_attrs)
   rescue Addressable::URI::InvalidURIError, IDN::Idna::IdnaError
     encode(entity[:url])
   end
@@ -175,7 +215,7 @@ class Formatter
     username, domain = acct.split('@')
 
     domain  = nil if TagManager.instance.local_domain?(domain)
-    account = Account.find_remote(username, domain)
+    account = EntityCache.instance.mention(username, domain)
 
     account ? mention_html(account) : "@#{acct}"
   end

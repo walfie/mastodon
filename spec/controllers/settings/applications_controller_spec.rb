@@ -2,10 +2,10 @@ require 'rails_helper'
 
 describe Settings::ApplicationsController do
   render_views
-  
+
   let!(:user) { Fabricate(:user) }
   let!(:app) { Fabricate(:application, owner: user) }
-  
+
   before do
     sign_in user, scope: :user
   end
@@ -15,17 +15,17 @@ describe Settings::ApplicationsController do
 
     it 'shows apps' do
       get :index
-      expect(response).to have_http_status(:success)
+      expect(response).to have_http_status(200)
       expect(assigns(:applications)).to include(app)
       expect(assigns(:applications)).to_not include(other_app)
     end
   end
 
-  
+
   describe 'GET #show' do
     it 'returns http success' do
       get :show, params: { id: app.id }
-      expect(response).to have_http_status(:success)
+      expect(response).to have_http_status(200)
       expect(assigns[:application]).to eql(app)
     end
 
@@ -40,7 +40,7 @@ describe Settings::ApplicationsController do
   describe 'GET #new' do
     it 'works' do
       get :new
-      expect(response).to have_http_status(:success)
+      expect(response).to have_http_status(200)
     end
   end
 
@@ -102,7 +102,7 @@ describe Settings::ApplicationsController do
       end
 
       it 'returns http success' do
-        expect(response).to have_http_status(:success)
+        expect(response).to have_http_status(200)
       end
 
       it 'renders form again' do
@@ -110,7 +110,7 @@ describe Settings::ApplicationsController do
       end
     end
   end
-  
+
   describe 'PATCH #update' do
     context 'success' do
       let(:opts) {
@@ -131,7 +131,7 @@ describe Settings::ApplicationsController do
         call_update
         expect(app.reload.website).to eql(opts[:website])
       end
-      
+
       it 'redirects back to applications page' do
         expect(call_update).to redirect_to(settings_applications_path)
       end
@@ -151,7 +151,7 @@ describe Settings::ApplicationsController do
       end
 
       it 'returns http success' do
-        expect(response).to have_http_status(:success)
+        expect(response).to have_http_status(200)
       end
 
       it 'renders form again' do

@@ -157,18 +157,17 @@ class EmojiPickerMenu extends React.PureComponent {
     intl: PropTypes.object.isRequired,
     skinTone: PropTypes.number.isRequired,
     onSkinTone: PropTypes.func.isRequired,
-    autoPlay: PropTypes.bool,
   };
 
   static defaultProps = {
     style: {},
     loading: true,
-    placement: 'bottom',
     frequentlyUsedEmojis: [],
   };
 
   state = {
     modifierOpen: false,
+    placement: null,
   };
 
   handleDocumentClick = e => {
@@ -235,7 +234,7 @@ class EmojiPickerMenu extends React.PureComponent {
   }
 
   render () {
-    const { loading, style, intl, custom_emojis, autoPlay, skinTone, frequentlyUsedEmojis } = this.props;
+    const { loading, style, intl, custom_emojis, skinTone, frequentlyUsedEmojis } = this.props;
 
     if (loading) {
       return <div style={{ width: 299 }} />;
@@ -250,7 +249,7 @@ class EmojiPickerMenu extends React.PureComponent {
           perLine={8}
           emojiSize={22}
           sheetSize={32}
-          custom={buildCustomEmojis(custom_emojis, autoPlay)}
+          custom={buildCustomEmojis(custom_emojis)}
           color=''
           emoji=''
           set='twitter'
@@ -284,7 +283,6 @@ export default class EmojiPickerDropdown extends React.PureComponent {
   static propTypes = {
     custom_emojis: ImmutablePropTypes.list,
     frequentlyUsedEmojis: PropTypes.arrayOf(PropTypes.string),
-    autoPlay: PropTypes.bool,
     intl: PropTypes.object.isRequired,
     onPickEmoji: PropTypes.func.isRequired,
     onSkinTone: PropTypes.func.isRequired,
@@ -300,7 +298,7 @@ export default class EmojiPickerDropdown extends React.PureComponent {
     this.dropdown = c;
   }
 
-  onShowDropdown = () => {
+  onShowDropdown = ({ target }) => {
     this.setState({ active: true });
 
     if (!EmojiPicker) {
@@ -315,6 +313,9 @@ export default class EmojiPickerDropdown extends React.PureComponent {
         this.setState({ loading: false });
       });
     }
+
+    const { top } = target.getBoundingClientRect();
+    this.setState({ placement: top * 2 < innerHeight ? 'bottom' : 'top' });
   }
 
   onHideDropdown = () => {
@@ -326,7 +327,7 @@ export default class EmojiPickerDropdown extends React.PureComponent {
       if (this.state.active) {
         this.onHideDropdown();
       } else {
-        this.onShowDropdown();
+        this.onShowDropdown(e);
       }
     }
   }
@@ -346,9 +347,9 @@ export default class EmojiPickerDropdown extends React.PureComponent {
   }
 
   render () {
-    const { intl, onPickEmoji, autoPlay, onSkinTone, skinTone, frequentlyUsedEmojis } = this.props;
+    const { intl, onPickEmoji, onSkinTone, skinTone, frequentlyUsedEmojis } = this.props;
     const title = intl.formatMessage(messages.emoji);
-    const { active, loading } = this.state;
+    const { active, loading, placement } = this.state;
 
     return (
       <div className='emoji-picker-dropdown' onKeyDown={this.handleKeyDown}>
@@ -360,13 +361,12 @@ export default class EmojiPickerDropdown extends React.PureComponent {
           />
         </div>
 
-        <Overlay show={active} placement='bottom' target={this.findTarget}>
+        <Overlay show={active} placement={placement} target={this.findTarget}>
           <EmojiPickerMenu
             custom_emojis={this.props.custom_emojis}
             loading={loading}
             onClose={this.onHideDropdown}
             onPick={onPickEmoji}
-            autoPlay={autoPlay}
             onSkinTone={onSkinTone}
             skinTone={skinTone}
             frequentlyUsedEmojis={frequentlyUsedEmojis}

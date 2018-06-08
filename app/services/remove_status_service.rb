@@ -3,7 +3,7 @@
 class RemoveStatusService < BaseService
   include StreamEntryRenderer
 
-  def call(status)
+  def call(status, **options)
     @payload      = Oj.dump(event: :delete, payload: status.id.to_s)
     @status       = status
     @account      = status.account
@@ -11,17 +11,26 @@ class RemoveStatusService < BaseService
     @mentions     = status.mentions.includes(:account).to_a
     @reblogs      = status.reblogs.to_a
     @stream_entry = status.stream_entry
+    @options      = options
 
     remove_from_self if status.account.local?
     remove_from_followers
+    remove_from_lists
     remove_from_affected
     remove_reblogs
     remove_from_hashtags
     remove_from_public
+    remove_from_media if status.media_attachments.any?
+    remove_from_direct if status.direct_visibility?
 
     @status.destroy!
 
-    return unless @account.local?
+    # There is no reason to send out Undo activities when the
+    # cause is that the original object has been removed, since
+    # original object being removed implicitly removes reblogs
+    # of it. The Delete activity of the original is forwarded
+    # separately.
+    return if !@account.local? || @options[:original_removed]
 
     remove_from_remote_followers
     remove_from_remote_affected
@@ -30,12 +39,18 @@ class RemoveStatusService < BaseService
   private
 
   def remove_from_self
-    unpush(:home, @account, @status)
+    FeedManager.instance.unpush_from_home(@account, @status)
   end
 
   def remove_from_followers
-    @account.followers.local.find_each do |follower|
-      unpush(:home, follower, @status)
+    @account.followers_for_local_distribution.find_each do |follower|
+      FeedManager.instance.unpush_from_home(follower, @status)
+    end
+  end
+
+  def remove_from_lists
+    @account.lists_for_local_distribution.select(:id, :account_id).find_each do |list|
+      FeedManager.instance.unpush_from_list(list, @status)
     end
   end
 
@@ -97,12 +112,8 @@ class RemoveStatusService < BaseService
     # without us being able to do all the fancy stuff
 
     @reblogs.each do |reblog|
-      RemoveStatusService.new.call(reblog)
+      RemoveStatusService.new.call(reblog, original_removed: true)
     end
-  end
-
-  def unpush(type, receiver, status)
-    FeedManager.instance.unpush(type, receiver, status)
   end
 
   def remove_from_hashtags
@@ -119,6 +130,20 @@ class RemoveStatusService < BaseService
 
     Redis.current.publish('timeline:public', @payload)
     Redis.current.publish('timeline:public:local', @payload) if @status.local?
+  end
+
+  def remove_from_media
+    return unless @status.public_visibility?
+
+    Redis.current.publish('timeline:public:media', @payload)
+    Redis.current.publish('timeline:public:local:media', @payload) if @status.local?
+  end
+
+  def remove_from_direct
+    @mentions.each do |mention|
+      Redis.current.publish("timeline:direct:#{mention.account.id}", @payload) if mention.account.local?
+    end
+    Redis.current.publish("timeline:direct:#{@account.id}", @payload) if @account.local?
   end
 
   def redis

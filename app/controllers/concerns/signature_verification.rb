@@ -107,14 +107,12 @@ module SignatureVerification
 
   def incompatible_signature?(signature_params)
     signature_params['keyId'].blank? ||
-      signature_params['signature'].blank? ||
-      signature_params['algorithm'].blank? ||
-      signature_params['algorithm'] != 'rsa-sha256'
+      signature_params['signature'].blank?
   end
 
   def account_from_key_id(key_id)
     if key_id.start_with?('acct:')
-      ResolveRemoteAccountService.new.call(key_id.gsub(/\Aacct:/, ''))
+      ResolveAccountService.new.call(key_id.gsub(/\Aacct:/, ''))
     elsif !ActivityPub::TagManager.instance.local_uri?(key_id)
       account   = ActivityPub::TagManager.instance.uri_to_resource(key_id, Account)
       account ||= ActivityPub::FetchRemoteKeyService.new.call(key_id, id: false)

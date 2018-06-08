@@ -1,53 +1,25 @@
-import createStream from '../stream';
+import { connectStream } from '../stream';
 import {
   updateTimeline,
   deleteFromTimelines,
-  refreshHomeTimeline,
-  connectTimeline,
+  expandHomeTimeline,
   disconnectTimeline,
 } from './timelines';
-import { updateNotifications, refreshNotifications } from './notifications';
+import { updateNotifications, expandNotifications } from './notifications';
 import { getLocale } from '../locales';
 
 const { messages } = getLocale();
 
 export function connectTimelineStream (timelineId, path, pollingRefresh = null) {
-  return (dispatch, getState) => {
-    const streamingAPIBaseURL = getState().getIn(['meta', 'streaming_api_base_url']);
-    const accessToken = getState().getIn(['meta', 'access_token']);
+
+  return connectStream (path, pollingRefresh, (dispatch, getState) => {
     const locale = getState().getIn(['meta', 'locale']);
-    let polling = null;
-
-    const setupPolling = () => {
-      polling = setInterval(() => {
-        pollingRefresh(dispatch);
-      }, 20000);
-    };
-
-    const clearPolling = () => {
-      if (polling) {
-        clearInterval(polling);
-        polling = null;
-      }
-    };
-
-    const subscription = createStream(streamingAPIBaseURL, accessToken, path, {
-
-      connected () {
-        if (pollingRefresh) {
-          clearPolling();
-        }
-        dispatch(connectTimeline(timelineId));
-      },
-
-      disconnected () {
-        if (pollingRefresh) {
-          setupPolling();
-        }
+    return {
+      onDisconnect() {
         dispatch(disconnectTimeline(timelineId));
       },
 
-      received (data) {
+      onReceive (data) {
         switch(data.event) {
         case 'update':
           dispatch(updateTimeline(timelineId, JSON.parse(data.payload)));
@@ -60,35 +32,17 @@ export function connectTimelineStream (timelineId, path, pollingRefresh = null) 
           break;
         }
       },
-
-      reconnected () {
-        if (pollingRefresh) {
-          clearPolling();
-          pollingRefresh(dispatch);
-        }
-        dispatch(connectTimeline(timelineId));
-      },
-
-    });
-
-    const disconnect = () => {
-      if (subscription) {
-        subscription.close();
-      }
-      clearPolling();
     };
-
-    return disconnect;
-  };
+  });
 }
 
-function refreshHomeTimelineAndNotification (dispatch) {
-  dispatch(refreshHomeTimeline());
-  dispatch(refreshNotifications());
-}
+const refreshHomeTimelineAndNotification = (dispatch, done) => {
+  dispatch(expandHomeTimeline({}, () => dispatch(expandNotifications({}, done))));
+};
 
-export const connectUserStream = () => connectTimelineStream('home', 'user', refreshHomeTimelineAndNotification);
-export const connectCommunityStream = () => connectTimelineStream('community', 'public:local');
-export const connectMediaStream = () => connectTimelineStream('community', 'public:local');
-export const connectPublicStream = () => connectTimelineStream('public', 'public');
-export const connectHashtagStream = (tag) => connectTimelineStream(`hashtag:${tag}`, `hashtag&tag=${tag}`);
+export const connectUserStream      = () => connectTimelineStream('home', 'user', refreshHomeTimelineAndNotification);
+export const connectCommunityStream = ({ onlyMedia } = {}) => connectTimelineStream(`community${onlyMedia ? ':media' : ''}`, `public:local${onlyMedia ? ':media' : ''}`);
+export const connectPublicStream    = ({ onlyMedia } = {}) => connectTimelineStream(`public${onlyMedia ? ':media' : ''}`, `public${onlyMedia ? ':media' : ''}`);
+export const connectHashtagStream   = tag => connectTimelineStream(`hashtag:${tag}`, `hashtag&tag=${tag}`);
+export const connectDirectStream    = () => connectTimelineStream('direct', 'direct');
+export const connectListStream      = id => connectTimelineStream(`list:${id}`, `list&list=${id}`);

@@ -8,6 +8,32 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const OfflinePlugin = require('offline-plugin');
 const { publicPath } = require('./configuration.js');
 const path = require('path');
+const { URL } = require('whatwg-url');
+
+let compressionAlgorithm;
+try {
+  const zopfli = require('node-zopfli');
+  compressionAlgorithm = (content, options, fn) => {
+    zopfli.gzip(content, options, fn);
+  };
+} catch (error) {
+  compressionAlgorithm = 'gzip';
+}
+
+let attachmentHost;
+
+if (process.env.S3_ENABLED === 'true') {
+  if (process.env.S3_CLOUDFRONT_HOST) {
+    attachmentHost = process.env.S3_CLOUDFRONT_HOST;
+  } else {
+    attachmentHost = process.env.S3_HOSTNAME || `s3-${process.env.S3_REGION || 'us-east-1'}.amazonaws.com`;
+  }
+} else if (process.env.SWIFT_ENABLED === 'true') {
+  const { host } = new URL(process.env.SWIFT_OBJECT_URL);
+  attachmentHost = host;
+} else {
+  attachmentHost = null;
+}
 
 module.exports = merge(sharedConfig, {
   output: {
@@ -33,7 +59,7 @@ module.exports = merge(sharedConfig, {
     }),
     new CompressionPlugin({
       asset: '[path].gz[query]',
-      algorithm: 'gzip',
+      algorithm: compressionAlgorithm,
       test: /\.(js|css|html|json|ico|svg|eot|otf|ttf)$/,
     }),
     new BundleAnalyzerPlugin({ // generates report.html and stats.json
@@ -48,9 +74,39 @@ module.exports = merge(sharedConfig, {
     }),
     new OfflinePlugin({
       publicPath: publicPath, // sw.js must be served from the root to avoid scope issues
-      caches: { }, // do not cache things, we only use it for push notifications for now
+      caches: {
+        main: [':rest:'],
+        additional: [':externals:'],
+        optional: [
+          '**/locale_*.js', // don't fetch every locale; the user only needs one
+          '**/*_polyfills-*.js', // the user may not need polyfills
+          '**/*.woff2', // the user may have system-fonts enabled
+          // images/audio can be cached on-demand
+          '**/*.png',
+          '**/*.jpg',
+          '**/*.jpeg',
+          '**/*.svg',
+          '**/*.mp3',
+          '**/*.ogg',
+        ],
+      },
+      externals: [
+        '/emoji/1f602.svg', // used for emoji picker dropdown
+        '/emoji/sheet.png', // used in emoji-mart
+      ],
+      excludes: [
+        '**/*.gz',
+        '**/*.map',
+        'stats.json',
+        'report.html',
+        // any browser that supports ServiceWorker will support woff2
+        '**/*.eot',
+        '**/*.ttf',
+        '**/*-webfont-*.svg',
+        '**/*.woff',
+      ],
       ServiceWorker: {
-        entry: path.join(__dirname, '../../app/javascript/mastodon/service_worker/entry.js'),
+        entry: `imports-loader?ATTACHMENT_HOST=>${encodeURIComponent(JSON.stringify(attachmentHost))}!${encodeURI(path.join(__dirname, '../../app/javascript/mastodon/service_worker/entry.js'))}`,
         cacheName: 'mastodon',
         output: '../assets/sw.js',
         publicPath: '/sw.js',
