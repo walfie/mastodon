@@ -6,6 +6,7 @@ services:
     image: postgres:9.6-alpine
     networks:
       - internal_network
+    volumes:
       - ./postgres-data:/var/lib/postgresql/data
 
   redis:
