@@ -59,13 +59,8 @@ export default class PublicTimeline extends React.PureComponent {
         />
 
         <StatusListContainer
-<<<<<<< HEAD
-          timelineId='community'
-          loadMore={this.handleLoadMore}
-=======
           timelineId='public'
           onLoadMore={this.handleLoadMore}
->>>>>>> v2.4.1rc3
           scrollKey='standalone_public_timeline'
           trackScroll={false}
         />
