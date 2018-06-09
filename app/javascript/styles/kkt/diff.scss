@@ -12,23 +12,24 @@ body.about-body {
   background-image: $green-diamonds;
 }
 
-.landing-page__logo img {
-  mix-blend-mode: unset;
-}
-
-.landing-page__hero,
-.landing-page__information,
-.landing-page__call-to-action,
-.landing-page__forms {
-  @include status-format();
-}
-
 .simple_form p.hint.subtle-hint a {
   color: $green-text;
   text-decoration: underline;
 }
 
 .landing-page {
+  &__hero,
+  &__information,
+  &__call-to-action,
+  &__forms {
+    @include status-format();
+  }
+
+  &__logo img {
+    mix-blend-mode: unset;
+  }
+
+
   @for $i from 1 through 6 {
     h#{$i} {
       color: $pink-text;
@@ -42,17 +43,16 @@ body.about-body {
       }
     }
   }
+
   .header-wrapper.compact {
     background: linear-gradient(150deg, lighten($ui-base-color, 8%), $ui-base-color);
   }
 
-  .information-board__section {
-    strong {
+  .information-board {
+    &__section strong {
       color: $pink-text;
     }
-  }
 
-  .information-board {
     .panel {
       @include status-format();
     }
