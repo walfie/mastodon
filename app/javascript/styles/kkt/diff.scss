@@ -16,10 +16,54 @@ body.about-body {
   mix-blend-mode: unset;
 }
 
+.landing-page__hero,
+.landing-page__information,
+.landing-page__call-to-action,
+.landing-page__forms {
+  @include status-format();
+}
+
+.simple_form p.hint.subtle-hint a {
+  color: $green-text;
+  text-decoration: underline;
+}
+
 .landing-page {
   @for $i from 1 through 6 {
     h#{$i} {
       color: $pink-text;
+    }
+  }
+
+  .header {
+    .links {
+      a {
+        color: $pink-text;
+      }
+    }
+  }
+  .header-wrapper.compact {
+    background: linear-gradient(150deg, lighten($ui-base-color, 8%), $ui-base-color);
+  }
+
+  .information-board__section {
+    strong {
+      color: $pink-text;
+    }
+  }
+
+  .information-board {
+    .panel {
+      @include status-format();
+    }
+  }
+
+  .extended-description {
+    padding: 50px 0;
+
+    .container-alt {
+      @include status-format();
+      padding: 20px;
     }
   }
 }
@@ -52,7 +96,7 @@ body.about-body {
   &.button-primary {
     color: $brown-text;
     background: lighten($green-text, 5%);
-    background-color: lighten($green-ui, 10%);
+    background-color: darken($green-ui, 35%);
   }
 
   &.button-secondary {
