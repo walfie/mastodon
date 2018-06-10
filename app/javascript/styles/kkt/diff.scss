@@ -1,9 +1,3 @@
-.landing-page {
-  &__logo img {
-    mix-blend-mode: unset;
-  }
-}
-
 // Change the colors of button texts
 .button {
   color: $white;
@@ -11,6 +5,14 @@
   &.button-alternative-2 {
     color: $white;
   }
+}
+
+body {
+  background: $ui-base-color;
+  background-image: $base-color-diamonds;
+  background-repeat: repeat;
+  background-size: auto;
+  background-attachment: fixed;
 }
 
 // Change the text colors on inverted background
@@ -35,3 +37,78 @@
 .simple_form button {
   color: $white;
 }
+
+.simple_form {
+  input[type=text],
+  input[type=number],
+  input[type=email],
+  input[type=password],
+  textarea {
+    border-bottom-color: $primary-text-color;
+
+    &:active,
+    &:focus {
+      border-bottom-color: $highlight-text-color;
+      background: rgba($base-overlay-background, 0.7);
+    }
+  }
+}
+
+// About page
+body.about-body {
+  background: $ui-base-color;
+  background-image: $base-color-diamonds;
+}
+
+.landing-page {
+  &__logo img {
+    mix-blend-mode: unset;
+  }
+
+  &__hero,
+  &__information,
+  &__call-to-action,
+  &__forms {
+    @include panel-format();
+  }
+
+  .header-wrapper.compact {
+    background: linear-gradient(150deg, lighten($ui-base-color, 8%), $ui-base-color);
+  }
+
+  .information-board {
+    &__section strong {
+      color: $dark-text-color;
+    }
+
+    .panel {
+      @include panel-format();
+    }
+  }
+
+  .extended-description {
+    padding: 50px 0;
+
+    .container-alt {
+      @include panel-format();
+      padding: 20px;
+    }
+  }
+}
+
+// Admin page
+.admin-wrapper {
+  .sidebar {
+    background: rgba($ui-base-lighter-color, 0.15);
+  }
+
+  .sidebar-wrapper {
+    background: $ui-base-color;
+    background-image: $base-color-diamonds;
+  }
+
+  .content-wrapper {
+    background: $panel-background;
+  }
+}
+
