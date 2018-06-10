@@ -19,6 +19,14 @@ body.app-body,
   background-attachment: fixed;
 }
 
+
+// Onboarding
+.pseudo-drawer,
+.onboarding-modal__paginator {
+  background-color: $ui-highlight-color;
+  background-image: $highlight-color-diamonds;
+}
+
 // Scrollbar
 ::-webkit-scrollbar {
   width: 10px;
@@ -156,7 +164,8 @@ body.about-body {
 
 .status,
 .detailed-status,
-.activity-stream .detailed-status.light
+.activity-stream .detailed-status.light,
+.report-modal__statuses .status-check-box
 {
   @include panel-format();
 }
@@ -410,8 +419,19 @@ body.about-body {
   color: $darker-text-color;
 }
 
+.detailed-status__action-bar {
+  background: none;
+  border: 0;
+}
+
 .activity-stream {
+  .pre-header {
+    padding-bottom: 10px;
+  }
+
   .entry {
+    // Original style has overrides for first/last child
+    border-radius: 8px !important;
     background: none;
   }
 
@@ -458,5 +478,13 @@ body.about-body {
       }
     }
   }
+}
+
+.react-toggle-track {
+  background-color: $ui-base-lighter-color;
+}
+
+.report-modal__statuses .status-check-box {
+  margin: 8px;
 }
 
