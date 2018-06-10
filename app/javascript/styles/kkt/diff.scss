@@ -74,7 +74,7 @@ body.app-body,
     &:active,
     &:focus {
       border-bottom-color: $highlight-text-color;
-      background: rgba($base-overlay-background, 0.7);
+      background: rgba($base-overlay-background, 0.1);
     }
   }
 }
@@ -161,11 +161,6 @@ body.about-body {
 
 .status {
   @include status-position();
-}
-
-.detailed-status {
-  background: inherit;
-  border: 0;
 }
 
 .status__avatar {
@@ -341,8 +336,73 @@ body.about-body {
 }
 
 .account__header .account__header__display-name,
-.account__header__display-name,
-.account__header__username {
+.account__header__display-name {
   color: $white;
 }
 
+.account__header .account__header__content {
+  color: lighten(saturate(adjust-hue($dark-text-color, -17deg), 12%), 35%);
+}
+
+// Stream entries
+.activity-stream {
+  background: rgba($black, 0.1);
+}
+
+.activity-stream .entry {
+  background: none;
+}
+
+.activity-stream-tabs {
+  background: rgba($white, 0.5);
+  border-bottom: 0;
+  border-radius: 0 0 25px 25px;
+  margin-bottom: 10px;
+}
+
+.card .card__bio {
+  @include panel-format();
+  border-radius: 0;
+}
+
+.card::after {
+  background: $black-background;
+}
+
+.icon-button {
+  &.overlayed {
+    background: rgba($black, 0.4);
+    color: $white;
+
+    &:hover {
+      color: $white;
+    }
+  }
+}
+
+.media-gallery__gifv__label {
+  background: rgba($white, 0.4);
+}
+
+.media-gallery__item-thumbnail {
+  &,
+  img {
+    object-fit: contain;
+  }
+}
+
+.media-gallery__item-gifv-thumbnail {
+  object-fit: contain;
+  top: 0%;
+  transform: none;
+}
+
+.media-spoiler-video {
+  background-size: contain;
+  width: 100% !important;
+}
+
+.media-spoiler {
+  background: rgba($black, 0.2);
+  color: $darker-text-color;
+}
