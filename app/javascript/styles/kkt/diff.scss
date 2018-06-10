@@ -246,6 +246,9 @@ body.about-body {
 }
 
 .column-header,
+.column-header > .column-header__back-button,
+.column-header__back-button,
+.column-back-button,
 .column-header__button {
   font-weight: bold;
   background: desaturate(darken($ui-base-color, 12%),18%);
@@ -284,10 +287,6 @@ body.about-body {
   color: $darker-text-color;
 }
 
-.column-header > .column-header__back-button {
-  color: inherit;
-}
-
 .getting-started {
   background: inherit;
 }
@@ -317,5 +316,40 @@ body.about-body {
 
 .drawer {
   padding-bottom: 0 !important;
+}
+
+.account__action-bar {
+  background: transparentize($white, 0.3);
+  border-top: 1px solid rgba($black, 0.6);
+  border-bottom: 1px solid rgba($black, 0.6);
+}
+
+.account__action-bar-dropdown {
+  width: 22px;
+}
+
+.account__action-bar__tab {
+  width: 50px;
+  flex: 0 1 50px;
+  border-left: 1px solid rgba($black, 0.6);
+  overflow: unset;
+}
+
+.account-timeline__header {
+  padding-bottom: 5px;
+}
+
+.account__header {
+  background: inherit;
+
+  & > div {
+    background: $black-background;
+  }
+}
+
+.account__header .account__header__display-name,
+.account__header__display-name,
+.account__header__username {
+  color: $white;
 }
 
