@@ -22,6 +22,7 @@ body.app-body,
 // Scrollbar
 ::-webkit-scrollbar {
   width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -153,6 +154,30 @@ body.about-body {
   background: $muted-balloon-tail;
 }
 
+.status {
+  @include panel-format();
+  @include status-position();
+}
+
+.status__avatar {
+  height: 48px;
+  left: 10px;
+  position: absolute;
+  top: 0;
+  width: 48px;
+  margin-left: -74px;
+}
+
+.account__avatar {
+  @include avatar-radius(); // Why doesn't this work
+  border-radius: 4px;
+  background: transparent no-repeat;
+  background-position: 50%;
+  background-clip: padding-box;
+  border: solid 2px $panel-border;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+}
+
 .drawer {
   width: 320px;
 
@@ -210,4 +235,12 @@ body.about-body {
 .column>.scrollable {
   background: hsla(71,42%,77%,.5);
 }
+
+.column-header,
+.column-header__button {
+  font-weight: bold;
+  background: desaturate(darken($ui-base-color, 12%),18%);
+  color: $primary-text-color;
+}
+
 
