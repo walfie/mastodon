@@ -243,4 +243,23 @@ body.about-body {
   color: $primary-text-color;
 }
 
+.compose-form .compose-form__buttons-wrapper {
+  background: darken($ui-base-color, 6%);
+}
+
+// Change the background color of status__content__spoiler-link
+.reply-indicator__content .status__content__spoiler-link,
+.status__content .status__content__spoiler-link {
+  color: $white;
+  background: $ui-primary-color;
+
+  &:hover {
+    background: lighten($ui-primary-color, 6%);
+  }
+}
+
+.status__display-name strong,
+.account__display-name strong {
+  color: $secondary-text-color;
+}
 

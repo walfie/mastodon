@@ -9,7 +9,7 @@ $gold-star: #ca8f04 !default;        // Dark Goldenrod
 // Values from the classic Mastodon UI
 $classic-base-color: #282c37;         // Midnight Express
 $classic-primary-color: #9baec8;      // Echo Blue
-$classic-secondary-color: #d9e1e8;    // Pattens Blue
+$classic-secondary-color: #ecf5be;    // Pattens Blue
 $classic-highlight-color: #ed649c;    // Summer Sky
 
 // Variables for defaults in UI
@@ -30,14 +30,14 @@ $ui-highlight-color: $classic-highlight-color !default;
 // Variables for texts
 $primary-text-color: #7b5d4d !default;
 $darker-text-color: #6a4643 !default;
-$dark-text-color: #ed649c !default;
+$dark-text-color: #8e9956 !default;
 $secondary-text-color: #ed649c !default;
 $highlight-text-color: $ui-highlight-color !default;
-$action-button-color: $ui-base-lighter-color !default;
+$action-button-color: lighten(desaturate($darker-text-color, 5%), 12%) !default;
 
 // For texts on inverted backgrounds
-$inverted-text-color: $white !default;
-$lighter-text-color: $white !default;
+$inverted-text-color: $black !default;
+$lighter-text-color: $primary-text-color !default;
 $light-text-color: $white !default;
 
 // Custom
