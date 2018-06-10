@@ -263,3 +263,17 @@ body.about-body {
   color: $secondary-text-color;
 }
 
+.column-link {
+  font-weight: bold;
+  background: desaturate(darken($ui-base-color, 12%),18%);
+}
+
+.column-subheading {
+  background: darken($ui-base-color, 10%);
+  color: $darker-text-color;
+}
+
+.getting-started {
+  background: inherit;
+}
+
