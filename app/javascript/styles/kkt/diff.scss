@@ -1,3 +1,5 @@
+@import 'banner';
+
 // Change the colors of button texts
 .button {
   color: $white;
@@ -7,12 +9,34 @@
   }
 }
 
-body {
+body,
+body.app-body,
+.ui {
   background: $ui-base-color;
   background-image: $base-color-diamonds;
   background-repeat: repeat;
   background-size: auto;
   background-attachment: fixed;
+}
+
+// Scrollbar
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $scrollbar-color;
+  border-radius: 50px;
+}
+
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background: lighten($scrollbar-color, 10%);
+}
+
+::-webkit-scrollbar-track:hover,
+::-webkit-scrollbar-track:active {
+  background: rgba($black, 0.2);
 }
 
 // Change the text colors on inverted background
@@ -110,5 +134,80 @@ body.about-body {
   .content-wrapper {
     background: $panel-background;
   }
+}
+
+// Components
+.status::before,
+.notification::before {
+  content: "";
+  display: block;
+  width: 12px;
+  height: 14px;
+  position: absolute;
+  left: -11px;
+  background: $balloon-tail;
+}
+
+.status.muted::before,
+.boost-modal__container .status::before {
+  background: $muted-balloon-tail;
+}
+
+.drawer {
+  width: 320px;
+
+  &__pager,
+  &__header {
+    background-color: $ui-highlight-color;
+    background-image: $highlight-color-diamonds;
+  }
+
+  &__header {
+    padding-left: 83px;
+    border-bottom: solid 2px $panel-shadow;
+
+    a {
+      &:hover {
+        background: transparentize($white, 0.3);
+        text-shadow: none;
+      }
+    }
+  }
+
+  &__tab {
+    padding: 15px 4px;
+    text-shadow: $panel-box-shadow;
+  }
+
+  &__inner {
+    background: none;
+
+    &.darker {
+      background-color: $ui-highlight-color;
+      background-image: $highlight-color-diamonds;
+    }
+
+    &__mastodon {
+      background: none;
+      visibility: hidden; // Hide the elephant
+    }
+  }
+}
+
+.tabs-bar {
+  background-color: $ui-highlight-color;
+  background-image: $highlight-color-diamonds;
+  border-bottom: 2px solid $panel-shadow;
+
+  &__link {
+    color: $classic-primary-color;
+    text-shadow: $panel-border;
+    border-bottom: 0;
+  }
+}
+
+.empty-column-indicator,
+.column>.scrollable {
+  background: hsla(71,42%,77%,.5);
 }
 
