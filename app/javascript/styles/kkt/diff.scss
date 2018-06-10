@@ -154,9 +154,18 @@ body.about-body {
   background: $muted-balloon-tail;
 }
 
-.status {
+.status,
+.detailed-status {
   @include panel-format();
+}
+
+.status {
   @include status-position();
+}
+
+.detailed-status {
+  background: inherit;
+  border: 0;
 }
 
 .status__avatar {
@@ -249,7 +258,8 @@ body.about-body {
 
 // Change the background color of status__content__spoiler-link
 .reply-indicator__content .status__content__spoiler-link,
-.status__content .status__content__spoiler-link {
+.status__content .status__content__spoiler-link,
+.status__content__spoiler-link {
   color: $white;
   background: $ui-primary-color;
 
@@ -259,7 +269,8 @@ body.about-body {
 }
 
 .status__display-name strong,
-.account__display-name strong {
+.account__display-name strong,
+.display-name strong {
   color: $secondary-text-color;
 }
 
@@ -273,7 +284,38 @@ body.about-body {
   color: $darker-text-color;
 }
 
+.column-header > .column-header__back-button {
+  color: inherit;
+}
+
 .getting-started {
   background: inherit;
+}
+
+.search__icon .fa {
+  color: inherit;
+}
+
+.search__input {
+  background: desaturate(darken($ui-base-color, 12%), 10%);
+  color: $darker-text-color;
+}
+
+.compose-form__publish-button-wrapper > .button {
+  background: desaturate(darken($ui-base-color, 40%), 10%);
+}
+
+.navigation-bar {
+  background: transparentize(darken(desaturate($ui-primary-color, 11%), 18%), 0.4);
+  color: lighten(desaturate($ui-highlight-color, 26%), 12%);
+  font-weight: bold;
+
+  strong {
+    color: lighten(desaturate($ui-highlight-color, 19%), 21%);
+  }
+}
+
+.drawer {
+  padding-bottom: 0 !important;
 }
 
