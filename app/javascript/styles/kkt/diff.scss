@@ -6,15 +6,94 @@ body {
   background-attachment: fixed;
 }
 
+// Admin page
+.admin-wrapper {
+  background: $green-ui;
+  background-image: $green-diamonds;
+
+  .sidebar-wrapper {
+    background: rgba(desaturate(darken($green-ui, 25%), 40%), 0.5);
+  }
+
+  .sidebar {
+    ul {
+      a {
+        color: $brown-text;
+
+        &:hover {
+          color: $brown-text;
+        }
+
+        &.selected {
+          background: desaturate(darken($green-ui, 12%),18%);
+        }
+      }
+    }
+  }
+
+  .content-wrapper {
+    background: $yellow-background;
+  }
+
+  .content {
+    h2 { color: $brown-text; }
+    h6 { color: $brown-text; }
+
+    .muted-hint a {
+      color: $brown-text;
+    }
+  }
+}
+
+// Forms
+.simple_form {
+  p.hint {
+    &.subtle-hint {
+      color: $green-text;
+
+      a {
+        color: $green-text;
+        text-decoration: underline;
+      }
+    }
+
+  }
+
+  span.hint {
+    color: $green-text;
+  }
+
+  button,
+  .button,
+  .block-button {
+    background: saturate($green-text, 33%);
+    color: $white;
+
+    &:hover {
+      background-color: darken($green-text, 5%);
+    }
+
+    &:active,
+    &:focus {
+      background-color: lighten($green-text, 10%);
+    }
+  }
+}
+
+.flash-message {
+  color: $brown-text;
+}
+
+.form-footer {
+  a {
+    color: $green-text;
+  }
+}
+
 // About page
 body.about-body {
   background: $ui-base-color;
   background-image: $green-diamonds;
-}
-
-.simple_form p.hint.subtle-hint a {
-  color: $green-text;
-  text-decoration: underline;
 }
 
 .landing-page {
