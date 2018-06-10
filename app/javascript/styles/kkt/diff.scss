@@ -155,7 +155,9 @@ body.about-body {
 }
 
 .status,
-.detailed-status {
+.detailed-status,
+.activity-stream .detailed-status.light
+{
   @include panel-format();
 }
 
@@ -172,8 +174,10 @@ body.about-body {
   margin-left: -74px;
 }
 
-.account__avatar {
-  @include avatar-radius(); // Why doesn't this work
+.account__avatar,
+.activity-stream .status.light .status__avatar,
+.activity-stream .detailed-status.light .avatar
+{
   border-radius: 4px;
   background: transparent no-repeat;
   background-position: 50%;
@@ -255,9 +259,12 @@ body.about-body {
 }
 
 // Change the background color of status__content__spoiler-link
+// this is such a mess
 .reply-indicator__content .status__content__spoiler-link,
 .status__content .status__content__spoiler-link,
-.status__content__spoiler-link {
+.status__content__spoiler-link,
+.activity-stream .status.light .status__content a.status__content__spoiler-link,
+.activity-stream .detailed-status.light .status__content a.status__content__spoiler-link {
   color: $white;
   background: $ui-primary-color;
 
@@ -349,10 +356,6 @@ body.about-body {
   background: rgba($black, 0.1);
 }
 
-.activity-stream .entry {
-  background: none;
-}
-
 .activity-stream-tabs {
   background: rgba($white, 0.5);
   border-bottom: 0;
@@ -406,3 +409,54 @@ body.about-body {
   background: rgba($black, 0.2);
   color: $darker-text-color;
 }
+
+.activity-stream {
+  .entry {
+    background: none;
+  }
+
+  .detailed-status.light {
+    .avatar img {
+      border-radius: 0;
+    }
+
+    .status__content {
+      color: $primary-text-color;
+    }
+
+    .detailed-status__display-name .display-name,
+    .display-name {
+      strong {
+        color: $secondary-text-color;
+      }
+
+      span {
+        color: $primary-text-color;
+      }
+    }
+  }
+
+  .status.light {
+    padding: 8px 14px 14px;
+
+    .status__avatar {
+      left: 10px;
+      top: 0;
+    }
+
+    .status__content {
+      color: $primary-text-color;
+    }
+
+    .display-name {
+      strong {
+        color: $secondary-text-color;
+      }
+
+      span {
+        color: $primary-text-color;
+      }
+    }
+  }
+}
+
