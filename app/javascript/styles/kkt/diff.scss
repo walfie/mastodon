@@ -27,6 +27,20 @@ body.app-body,
   background-image: $highlight-color-diamonds;
 }
 
+.onboarding-modal__paginator {
+  .onboarding-modal__nav {
+    color: $white;
+  }
+
+  .onboarding-modal__nav.onboarding-modal__done {
+    color: $white;
+  }
+}
+
+.onboarding-modal__dot {
+  background: $white;
+}
+
 // Scrollbar
 ::-webkit-scrollbar {
   width: 10px;
@@ -94,15 +108,28 @@ body.about-body {
 }
 
 .landing-page {
+  #mastodon-timeline {
+    background: none;
+  }
+
+  &__mascot img {
+    height: 230px;
+    margin-left: 20px;
+    margin-top: -20px;
+  }
   &__logo img {
     mix-blend-mode: unset;
   }
 
   &__hero,
   &__information,
-  &__call-to-action,
-  &__forms {
+  &__call-to-action {
     @include panel-format();
+  }
+
+  &__forms {
+    background: none;
+    box-shadow: none;
   }
 
   .header-wrapper.compact {
@@ -165,9 +192,14 @@ body.about-body {
 .status,
 .detailed-status,
 .activity-stream .detailed-status.light,
-.report-modal__statuses .status-check-box
+.report-modal__statuses .status-check-box,
+.simple_form.new_user
 {
   @include panel-format();
+}
+
+.simple_form.new_user {
+  padding: 20px;
 }
 
 .status {
