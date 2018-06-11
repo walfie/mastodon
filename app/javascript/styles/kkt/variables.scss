@@ -6,15 +6,8 @@ $error-red: #df405a !default;        // Cerise
 $warning-red: #ff5050 !default;      // Sunset Orange
 $gold-star: #ca8f04 !default;        // Dark Goldenrod
 
-// Values from the classic Mastodon UI
-$classic-base-color: #282c37;         // Midnight Express
-$classic-primary-color: #9baec8;      // Echo Blue
-$classic-secondary-color: #ecf5be;    // Pattens Blue
-$classic-highlight-color: #ed649c;    // Summer Sky
-
 // Variables for defaults in UI
 $base-shadow-color: $black !default;
-// $base-overlay-background: $white !default;
 $base-overlay-background: transparentize($black, 0.7) !default;
 $base-border-color: $white !default;
 $simple-background-color: $white !default;
@@ -25,7 +18,7 @@ $error-value-color: $error-red !default;
 $ui-base-color: #ecf5be !default;                  // Darkest
 $ui-base-lighter-color: darken($ui-base-color, 40%) !default; // Lighter darkest
 $ui-primary-color: #ed649c !default;            // Lighter
-$ui-secondary-color: $classic-secondary-color !default;        // Lightest
+$ui-secondary-color: #ecf5be !default;        // Lightest
 $ui-highlight-color: #e46bac !default;
 
 // Variables for texts
