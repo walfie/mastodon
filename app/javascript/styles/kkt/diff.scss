@@ -194,9 +194,24 @@ body.about-body {
 .detailed-status,
 .activity-stream .detailed-status.light,
 .report-modal__statuses .status-check-box,
-.simple_form.new_user
+.simple_form.new_user,
 {
   @include panel-format();
+}
+
+.notification {
+  @include panel-format($opacity:0.8);
+  @include status-position();
+  margin-bottom: 8px;
+  padding-left: 8px;
+  margin-left: 1px;
+  margin-right: 2px;
+}
+
+.notification__message {
+  margin-left: 25px;
+  padding: 8px 0;
+  color: $dark-text-color;
 }
 
 .simple_form.new_user {
@@ -217,6 +232,8 @@ body.about-body {
 }
 
 .account__avatar,
+.account__avatar-overlay-base,
+.account__avatar-overlay-overlay,
 .activity-stream .status.light .status__avatar,
 .activity-stream .detailed-status.light .avatar
 {
@@ -226,6 +243,10 @@ body.about-body {
   background-clip: padding-box;
   border: solid 2px $panel-border;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+}
+
+.account__avatar-overlay-overlay {
+  background-color: rgba($ui-base-color, 0.9);
 }
 
 .drawer {
@@ -325,6 +346,52 @@ body.about-body {
   color: $secondary-text-color;
 }
 
+
+.muted {
+  .status__content p,
+  .status__content a,
+  .display-name__account
+  {
+    color: lighten($dark-text-color, 15%);
+  }
+
+  .status__display-name strong,
+  .status__content a.mention
+  {
+    color: lighten($secondary-text-color, 15%);
+  }
+
+  .status__avatar {
+    opacity: 0.65;
+
+    .account__avatar,
+    .account__avatar-overlay,
+    .account__avatar-overlay-overlay,
+    .account__avatar-overlay-base, {
+      box-shadow: none;
+    }
+  }
+
+  .status__content__spoiler-link {
+    background: lighten(saturate($ui-primary-color, 5%), 10%);
+    color: $white;
+
+    &:hover {
+      background: lighten(saturate($ui-primary-color, 5%), 20%);
+    }
+  }
+
+  .status__action-bar .fa {
+    opacity: 0.75;
+    -webkit-transition: opacity 300ms;
+    transition: opacity 300ms;
+
+    &:hover {
+       opacity: 1;
+    }
+  }
+}
+
 .column-link {
   font-weight: bold;
   background: desaturate(darken($ui-base-color, 12%),18%);
@@ -362,7 +429,7 @@ body.about-body {
   }
 }
 
-.drawer {
+.column, .drawer {
   padding-bottom: 0 !important;
 }
 
@@ -470,6 +537,10 @@ body.about-body {
     // Original style has overrides for first/last child
     border-radius: 8px !important;
     background: none;
+
+    .entry-center {
+      padding-bottom: 10px;
+    }
   }
 
   .detailed-status.light {
