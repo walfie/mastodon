@@ -698,3 +698,10 @@ body.about-body {
   background-size: contain;
 }
 
+.react-swipeable-view-container,
+.react-swipeable-view-container .columns-area,
+.react-swipeable-view-container .drawer,
+.react-swipeable-view-container .column {
+  height: 100% !important;
+}
+
