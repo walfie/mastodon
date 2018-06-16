@@ -1,53 +1,213 @@
 import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import Dropdown, { DropdownTrigger, DropdownContent } from 'react-simple-dropdown';
 import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import IconButton from './icon_button';
+import Overlay from 'react-overlays/lib/Overlay';
+import Motion from '../features/ui/util/optional_motion';
+import spring from 'react-motion/lib/spring';
+import detectPassiveEvents from 'detect-passive-events';
 
-export default class DropdownMenu extends React.PureComponent {
+const listenerOptions = detectPassiveEvents.hasSupport ? { passive: true } : false;
+let id = 0;
+
+class DropdownMenu extends React.PureComponent {
 
   static contextTypes = {
     router: PropTypes.object,
   };
 
   static propTypes = {
-    isUserTouching: PropTypes.func,
-    isModalOpen: PropTypes.bool.isRequired,
-    onModalOpen: PropTypes.func,
-    onModalClose: PropTypes.func,
-    icon: PropTypes.string.isRequired,
     items: PropTypes.array.isRequired,
-    size: PropTypes.number.isRequired,
-    direction: PropTypes.string,
-    status: ImmutablePropTypes.map,
-    ariaLabel: PropTypes.string,
-    disabled: PropTypes.bool,
+    onClose: PropTypes.func.isRequired,
+    style: PropTypes.object,
+    placement: PropTypes.string,
+    arrowOffsetLeft: PropTypes.string,
+    arrowOffsetTop: PropTypes.string,
   };
 
   static defaultProps = {
-    ariaLabel: 'Menu',
-    isModalOpen: false,
-    isUserTouching: () => false,
+    style: {},
+    placement: 'bottom',
   };
 
   state = {
-    direction: 'left',
-    expanded: false,
+    mounted: false,
   };
 
-  setRef = (c) => {
-    this.dropdown = c;
+  handleDocumentClick = e => {
+    if (this.node && !this.node.contains(e.target)) {
+      this.props.onClose();
+    }
   }
 
-  handleClick = (e) => {
+  componentDidMount () {
+    document.addEventListener('click', this.handleDocumentClick, false);
+    document.addEventListener('touchend', this.handleDocumentClick, listenerOptions);
+    if (this.focusedItem) this.focusedItem.focus();
+    this.setState({ mounted: true });
+  }
+
+  componentWillUnmount () {
+    document.removeEventListener('click', this.handleDocumentClick, false);
+    document.removeEventListener('touchend', this.handleDocumentClick, listenerOptions);
+  }
+
+  setRef = c => {
+    this.node = c;
+  }
+
+  setFocusRef = c => {
+    this.focusedItem = c;
+  }
+
+  handleKeyDown = e => {
+    const items = Array.from(this.node.getElementsByTagName('a'));
+    const index = items.indexOf(e.currentTarget);
+    let element;
+
+    switch(e.key) {
+    case 'Enter':
+      this.handleClick(e);
+      break;
+    case 'ArrowDown':
+      element = items[index+1];
+      if (element) {
+        element.focus();
+      }
+      break;
+    case 'ArrowUp':
+      element = items[index-1];
+      if (element) {
+        element.focus();
+      }
+      break;
+    case 'Home':
+      element = items[0];
+      if (element) {
+        element.focus();
+      }
+      break;
+    case 'End':
+      element = items[items.length-1];
+      if (element) {
+        element.focus();
+      }
+      break;
+    }
+  }
+
+  handleClick = e => {
     const i = Number(e.currentTarget.getAttribute('data-index'));
     const { action, to } = this.props.items[i];
 
-    if (this.props.isModalOpen) {
-      this.props.onModalClose();
+    this.props.onClose();
+
+    if (typeof action === 'function') {
+      e.preventDefault();
+      action(e);
+    } else if (to) {
+      e.preventDefault();
+      this.context.router.history.push(to);
+    }
+  }
+
+  renderItem (option, i) {
+    if (option === null) {
+      return <li key={`sep-${i}`} className='dropdown-menu__separator' />;
     }
 
-    // Don't call e.preventDefault() when the item uses 'href' property.
-    // ex. "Edit profile" on the account action bar
+    const { text, href = '#' } = option;
+
+    return (
+      <li className='dropdown-menu__item' key={`${text}-${i}`}>
+        <a href={href} target='_blank' rel='noopener' role='button' tabIndex='0' ref={i === 0 ? this.setFocusRef : null} onClick={this.handleClick} onKeyDown={this.handleKeyDown} data-index={i}>
+          {text}
+        </a>
+      </li>
+    );
+  }
+
+  render () {
+    const { items, style, placement, arrowOffsetLeft, arrowOffsetTop } = this.props;
+    const { mounted } = this.state;
+
+    return (
+      <Motion defaultStyle={{ opacity: 0, scaleX: 0.85, scaleY: 0.75 }} style={{ opacity: spring(1, { damping: 35, stiffness: 400 }), scaleX: spring(1, { damping: 35, stiffness: 400 }), scaleY: spring(1, { damping: 35, stiffness: 400 }) }}>
+        {({ opacity, scaleX, scaleY }) => (
+          // It should not be transformed when mounting because the resulting
+          // size will be used to determine the coordinate of the menu by
+          // react-overlays
+          <div className='dropdown-menu' style={{ ...style, opacity: opacity, transform: mounted ? `scale(${scaleX}, ${scaleY})` : null }} ref={this.setRef}>
+            <div className={`dropdown-menu__arrow ${placement}`} style={{ left: arrowOffsetLeft, top: arrowOffsetTop }} />
+
+            <ul>
+              {items.map((option, i) => this.renderItem(option, i))}
+            </ul>
+          </div>
+        )}
+      </Motion>
+    );
+  }
+
+}
+
+export default class Dropdown extends React.PureComponent {
+
+  static contextTypes = {
+    router: PropTypes.object,
+  };
+
+  static propTypes = {
+    icon: PropTypes.string.isRequired,
+    items: PropTypes.array.isRequired,
+    size: PropTypes.number.isRequired,
+    title: PropTypes.string,
+    disabled: PropTypes.bool,
+    status: ImmutablePropTypes.map,
+    isUserTouching: PropTypes.func,
+    isModalOpen: PropTypes.bool.isRequired,
+    onOpen: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
+    dropdownPlacement: PropTypes.string,
+    openDropdownId: PropTypes.number,
+  };
+
+  static defaultProps = {
+    title: 'Menu',
+  };
+
+  state = {
+    id: id++,
+  };
+
+  handleClick = ({ target }) => {
+    if (this.state.id === this.props.openDropdownId) {
+      this.handleClose();
+    } else {
+      const { top } = target.getBoundingClientRect();
+      const placement = top * 2 < innerHeight ? 'bottom' : 'top';
+
+      this.props.onOpen(this.state.id, this.handleItemClick, placement);
+    }
+  }
+
+  handleClose = () => {
+    this.props.onClose(this.state.id);
+  }
+
+  handleKeyDown = e => {
+    switch(e.key) {
+    case 'Escape':
+      this.handleClose();
+      break;
+    }
+  }
+
+  handleItemClick = e => {
+    const i = Number(e.currentTarget.getAttribute('data-index'));
+    const { action, to } = this.props.items[i];
+
+    this.handleClose();
 
     if (typeof action === 'function') {
       e.preventDefault();
@@ -56,90 +216,36 @@ export default class DropdownMenu extends React.PureComponent {
       e.preventDefault();
       this.context.router.history.push(to);
     }
-
-    this.dropdown.hide();
   }
 
-  handleShow = () => {
-    if (this.props.isUserTouching()) {
-      this.props.onModalOpen({
-        status: this.props.status,
-        actions: this.props.items,
-        onClick: this.handleClick,
-      });
-    } else {
-      this.setState({ expanded: true });
-    }
+  setTargetRef = c => {
+    this.target = c;
   }
 
-  handleHide = () => this.setState({ expanded: false })
-
-  handleToggle = (e) => {
-    if (e.key === 'Enter') {
-      if (this.props.isUserTouching()) {
-        this.handleShow();
-      } else {
-        this.setState({ expanded: !this.state.expanded });
-      }
-    } else if (e.key === 'Escape') {
-      this.setState({ expanded: false });
-    }
-  }
-
-  renderItem = (item, i) => {
-    if (item === null) {
-      return <li key={`sep-${i}`} className='dropdown__sep' />;
-    }
-
-    const { text, href = '#' } = item;
-
-    return (
-      <li className='dropdown__content-list-item' key={`${text}-${i}`}>
-        <a href={href} target='_blank' rel='noopener' role='button' tabIndex='0' autoFocus={i === 0} onClick={this.handleClick} data-index={i} className='dropdown__content-list-link'>
-          {text}
-        </a>
-      </li>
-    );
+  findTarget = () => {
+    return this.target;
   }
 
   render () {
-    const { icon, items, size, direction, ariaLabel, disabled } = this.props;
-    const { expanded }   = this.state;
-    const isUserTouching = this.props.isUserTouching();
-    const directionClass = (direction === 'left') ? 'dropdown__left' : 'dropdown__right';
-    const iconStyle      = { fontSize: `${size}px`, width: `${size}px`, lineHeight: `${size}px` };
-    const iconClassname  = `fa fa-fw fa-${icon} dropdown__icon`;
-
-    if (disabled) {
-      return (
-        <div className='icon-button disabled' style={iconStyle} aria-label={ariaLabel}>
-          <i className={iconClassname} aria-hidden />
-        </div>
-      );
-    }
-
-    const dropdownItems = expanded && (
-      <ul role='group' className='dropdown__content-list' onClick={this.handleHide}>
-        {items.map(this.renderItem)}
-      </ul>
-    );
-
-    // No need to render the actual dropdown if we use the modal. If we
-    // don't render anything <Dropdow /> breaks, so we just put an empty div.
-    const dropdownContent = !isUserTouching ? (
-      <DropdownContent className={directionClass} >
-        {dropdownItems}
-      </DropdownContent>
-    ) : <div />;
+    const { icon, items, size, title, disabled, dropdownPlacement, openDropdownId } = this.props;
+    const open = this.state.id === openDropdownId;
 
     return (
-      <Dropdown ref={this.setRef} active={isUserTouching ? false : expanded} onShow={this.handleShow} onHide={this.handleHide}>
-        <DropdownTrigger className='icon-button' style={iconStyle} role='button' aria-expanded={expanded} onKeyDown={this.handleToggle} tabIndex='0' aria-label={ariaLabel}>
-          <i className={iconClassname} aria-hidden />
-        </DropdownTrigger>
+      <div onKeyDown={this.handleKeyDown}>
+        <IconButton
+          icon={icon}
+          title={title}
+          active={open}
+          disabled={disabled}
+          size={size}
+          ref={this.setTargetRef}
+          onClick={this.handleClick}
+        />
 
-        {dropdownContent}
-      </Dropdown>
+        <Overlay show={open} placement={dropdownPlacement} target={this.findTarget}>
+          <DropdownMenu items={items} onClose={this.handleClose} />
+        </Overlay>
+      </div>
     );
   }
 

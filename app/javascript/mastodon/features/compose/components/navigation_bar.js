@@ -11,7 +11,7 @@ export default class NavigationBar extends ImmutablePureComponent {
 
   static propTypes = {
     account: ImmutablePropTypes.map.isRequired,
-    onClose: PropTypes.func.isRequired,
+    onClose: PropTypes.func,
   };
 
   render () {
@@ -19,7 +19,7 @@ export default class NavigationBar extends ImmutablePureComponent {
       <div className='navigation-bar'>
         <Permalink href={this.props.account.get('url')} to={`/accounts/${this.props.account.get('id')}`}>
           <span style={{ display: 'none' }}>{this.props.account.get('acct')}</span>
-          <Avatar src={this.props.account.get('avatar')} animate size={40} />
+          <Avatar account={this.props.account} size={40} />
         </Permalink>
 
         <div className='navigation-bar__profile'>
