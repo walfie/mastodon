@@ -237,10 +237,6 @@ body.about-body {
 .activity-stream .status.light .status__avatar,
 .activity-stream .detailed-status.light .avatar
 {
-  border-radius: 4px;
-  background: transparent no-repeat;
-  background-position: 50%;
-  background-clip: padding-box;
   border: solid 2px $panel-border;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
 }
@@ -701,3 +697,11 @@ body.about-body {
 .compose-form .compose-form__modifiers .compose-form__upload-thumbnail {
   background-size: contain;
 }
+
+.react-swipeable-view-container,
+.react-swipeable-view-container .columns-area,
+.react-swipeable-view-container .drawer,
+.react-swipeable-view-container .column {
+  height: 100% !important;
+}
+

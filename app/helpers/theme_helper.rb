@@ -12,7 +12,7 @@ module ThemeHelper
   end
 
   def site_theme_for_user
-    current_user&.account&.user&.setting_site_theme || Setting.site_theme
+    current_user&.account&.user&.setting_theme || Setting.theme
   rescue
     Setting.site_theme
   end
