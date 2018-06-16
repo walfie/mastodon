@@ -678,3 +678,22 @@ body.about-body {
 .account--follows-info {
   color: $white;
 }
+
+.community-timeline__section-headline,
+.public-timeline__section-headline,
+.account__section-headline {
+  border-bottom: 0;
+  background: rgba($white, 0.3);
+
+  a {
+    padding: 10px 0;
+  }
+}
+
+.regeneration-indicator {
+  background: inherit;
+}
+
+.regeneration-indicator__label {
+  margin-top: 0;
+}
