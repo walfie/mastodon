@@ -250,7 +250,7 @@ body.about-body {
 }
 
 .drawer {
-  width: 320px;
+  min-width: 320px;
 
   &__pager,
   &__header {
@@ -302,8 +302,10 @@ body.about-body {
     border-bottom: 0;
 
     &.active {
+      color: inherit;
+      border-bottom: 0;
       text-shadow: none;
-      background: hsla(0,0%,100%,.7);
+      background: hsla(0,0%,100%,.3);
     }
   }
 }
@@ -431,6 +433,12 @@ body.about-body {
   background: inherit;
 }
 
+.getting-started__wrapper {
+  background-image: $highlight-color-diamonds;
+  height: unset !important; // Bug in upstream mastodon?
+}
+
+
 .search__icon .fa {
   color: inherit;
 }
@@ -438,6 +446,52 @@ body.about-body {
 .search__input {
   background: desaturate(darken($ui-base-color, 12%), 10%);
   color: $darker-text-color;
+}
+
+.search-results {
+  background: transparentize(darken(desaturate($ui-highlight-color, 11%), 19%), 0.4);
+}
+
+.search-results__header {
+  border-bottom: solid 1px lighten(desaturate($ui-highlight-color, 26%), 12%);
+}
+
+.search-results__section {
+  .fa {
+    text-shadow: $panel-box-shadow;
+  }
+
+  strong {
+    color: lighten(desaturate($ui-highlight-color, 19%), 21%);
+    padding-top: 3px;
+  }
+
+  span {
+    color: lighten(desaturate($ui-highlight-color, 26%), 12%);
+  }
+
+  .account__avatar {
+    box-shadow: none;
+  }
+
+  .account {
+    border-bottom: 0;
+  }
+
+  h5 {
+    background: transparentize(darken(desaturate($ui-highlight-color, 11%), 19%), 0.4);
+    color: inherit;
+  }
+
+  .search-results__hashtag {
+    color: lighten(desaturate($ui-highlight-color, 19%), 21%);
+
+    &:hover,
+    &:active,
+    &:focus {
+      color: inherit;
+    }
+  }
 }
 
 .compose-form__publish-button-wrapper > .button {
