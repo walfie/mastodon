@@ -291,14 +291,39 @@ body.about-body {
 }
 
 .tabs-bar {
+  padding-left: 90px;
   background-color: $ui-highlight-color;
   background-image: $highlight-color-diamonds;
   border-bottom: 2px solid $panel-shadow;
 
   &__link {
-    color: $classic-primary-color;
-    text-shadow: $panel-border;
+    color: $darker-text-color;
+    text-shadow: $panel-box-shadow;
     border-bottom: 0;
+
+    &.active {
+      text-shadow: none;
+      background: hsla(0,0%,100%,.7);
+    }
+  }
+}
+
+@media screen and (min-width: 320px) {
+  .tabs-bar {
+    margin: 0;
+    padding-left: 90px;
+  }
+
+  .tabs-bar__link {
+    padding: 17px 4px;
+  }
+
+  .search {
+    margin-bottom: 0;
+  }
+
+  .columns-area {
+    padding: 0;
   }
 }
 
@@ -596,3 +621,6 @@ body.about-body {
   margin: 8px;
 }
 
+.account--follows-info {
+  color: $white;
+}
