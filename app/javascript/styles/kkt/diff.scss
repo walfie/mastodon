@@ -173,6 +173,15 @@ body.about-body {
   }
 }
 
+.simple_form .warning, .table-form .warning {
+  color: $white;
+  background: rgba($error-value-color, 0.8);
+
+  a {
+    color: $white;
+  }
+}
+
 // Components
 .status::before,
 .notification::before {
@@ -344,6 +353,15 @@ body.about-body {
   background: darken($ui-base-color, 6%);
 }
 
+.compose-form .compose-form__warning {
+  background: lighten($ui-highlight-color, 30%);
+
+  a {
+    color: $dark-text-color;
+    text-decoration: none;
+  }
+}
+
 // Change the background color of status__content__spoiler-link
 // this is such a mess
 .reply-indicator__content .status__content__spoiler-link,
@@ -452,6 +470,7 @@ body.about-body {
   border-bottom: solid 1px lighten(desaturate($ui-highlight-color, 26%), 12%);
 }
 
+.list-editor__accounts,
 .search-results__section {
   .fa {
     text-shadow: $panel-box-shadow;
@@ -535,13 +554,32 @@ body.about-body {
   color: $white;
 }
 
+.account__header__content,
 .account__header .account__header__content {
   color: lighten(saturate(adjust-hue($dark-text-color, -17deg), 12%), 35%);
+
+  .hashtag, .mention {
+    color: $secondary-text-color;
+  }
+
+  a {
+    color: $dark-text-color;
+    text-decoration: none;
+  }
+}
+
+.account__header__content.p-note {
+  color: $darker-text-color;
 }
 
 // Stream entries
-.activity-stream {
+.activity-stream,
+.accounts-grid {
   background: rgba($black, 0.1);
+}
+
+.accounts-grid.empty img {
+  opacity: 0.6;
 }
 
 .activity-stream-tabs {
@@ -569,10 +607,22 @@ body.about-body {
       color: $white;
     }
   }
+
+  &.disabled {
+    color: inherit;
+    opacity: 0.6;
+  }
 }
 
 .media-gallery__gifv__label {
   background: rgba($white, 0.4);
+}
+
+.account-gallery__item {
+  a {
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
 }
 
 .media-gallery__item-thumbnail {
@@ -591,6 +641,7 @@ body.about-body {
 .media-spoiler-video {
   background-size: contain;
   width: 100% !important;
+  background: rgba($black, 0.2);
 }
 
 .media-spoiler {
@@ -615,6 +666,15 @@ body.about-body {
 
     .entry-center {
       padding-bottom: 10px;
+    }
+
+    &:first-child,
+    &:last-child {
+      &,
+      .detailed-status.light,
+      .status.light {
+        border-radius: 8px !important;
+      }
     }
   }
 
@@ -703,5 +763,31 @@ body.about-body {
 .react-swipeable-view-container .drawer,
 .react-swipeable-view-container .column {
   height: 100% !important;
+}
+
+.account-role.bot {
+  color: lighten($error-red, 5%);
+  background-color: rgba(lighten($error-red, 12%), 0.4);
+}
+
+.accounts-grid .account-grid-card .account-grid-card__header::after {
+  background: $black-background;
+}
+
+.card .controls .icon-button,
+.account-grid-card .controls .icon-button {
+  color: $white;
+}
+
+.list-editor .drawer__inner.backdrop {
+  @include panel-format();
+  border-radius: 0;
+  border-left: 0;
+  border-top: 0;
+  border-bottom: 0;
+}
+
+.list-editor__accounts .account {
+  background: transparentize(darken(desaturate($ui-highlight-color, 11%), 19%), 0.4);
 }
 
