@@ -709,3 +709,13 @@ body.about-body {
   color: lighten($error-red, 5%);
   background-color: rgba(lighten($error-red, 12%), 0.4);
 }
+
+.accounts-grid .account-grid-card .account-grid-card__header::after {
+  background: $black-background;
+}
+
+.card .controls .icon-button,
+.account-grid-card .controls .icon-button {
+  color: $white;
+}
+
