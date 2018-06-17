@@ -461,6 +461,7 @@ body.about-body {
   border-bottom: solid 1px lighten(desaturate($ui-highlight-color, 26%), 12%);
 }
 
+.list-editor__accounts,
 .search-results__section {
   .fa {
     text-shadow: $panel-box-shadow;
@@ -726,5 +727,17 @@ body.about-body {
 .card .controls .icon-button,
 .account-grid-card .controls .icon-button {
   color: $white;
+}
+
+.list-editor .drawer__inner.backdrop {
+  @include panel-format();
+  border-radius: 0;
+  border-left: 0;
+  border-top: 0;
+  border-bottom: 0;
+}
+
+.list-editor__accounts .account {
+  background: transparentize(darken(desaturate($ui-highlight-color, 11%), 19%), 0.4);
 }
 
