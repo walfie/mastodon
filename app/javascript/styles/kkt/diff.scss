@@ -607,6 +607,11 @@ body.about-body {
       color: $white;
     }
   }
+
+  &.disabled {
+    color: inherit;
+    opacity: 0.6;
+  }
 }
 
 .media-gallery__gifv__label {
