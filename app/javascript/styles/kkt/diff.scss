@@ -667,6 +667,15 @@ body.about-body {
     .entry-center {
       padding-bottom: 10px;
     }
+
+    &:first-child,
+    &:last-child {
+      &,
+      .detailed-status.light,
+      .status.light {
+        border-radius: 8px !important;
+      }
+    }
   }
 
   .detailed-status.light {
