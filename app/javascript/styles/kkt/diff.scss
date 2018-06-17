@@ -559,8 +559,13 @@ body.about-body {
 }
 
 // Stream entries
-.activity-stream {
+.activity-stream,
+.accounts-grid {
   background: rgba($black, 0.1);
+}
+
+.accounts-grid.empty img {
+  opacity: 0.6;
 }
 
 .activity-stream-tabs {
