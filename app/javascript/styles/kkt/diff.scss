@@ -344,6 +344,15 @@ body.about-body {
   background: darken($ui-base-color, 6%);
 }
 
+.compose-form .compose-form__warning {
+  background: lighten($ui-highlight-color, 30%);
+
+  a {
+    color: $dark-text-color;
+    text-decoration: none;
+  }
+}
+
 // Change the background color of status__content__spoiler-link
 // this is such a mess
 .reply-indicator__content .status__content__spoiler-link,
