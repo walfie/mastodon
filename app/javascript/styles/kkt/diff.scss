@@ -705,3 +705,7 @@ body.about-body {
   height: 100% !important;
 }
 
+.account-role.bot {
+  color: lighten($error-red, 5%);
+  background-color: rgba(lighten($error-red, 12%), 0.4);
+}
