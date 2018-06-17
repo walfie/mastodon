@@ -554,8 +554,22 @@ body.about-body {
   color: $white;
 }
 
+.account__header__content,
 .account__header .account__header__content {
   color: lighten(saturate(adjust-hue($dark-text-color, -17deg), 12%), 35%);
+
+  .hashtag, .mention {
+    color: $secondary-text-color;
+  }
+
+  a {
+    color: $dark-text-color;
+    text-decoration: none;
+  }
+}
+
+.account__header__content.p-note {
+  color: $darker-text-color;
 }
 
 // Stream entries
