@@ -618,6 +618,13 @@ body.about-body {
   background: rgba($white, 0.4);
 }
 
+.account-gallery__item {
+  a {
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+}
+
 .media-gallery__item-thumbnail {
   &,
   img {
