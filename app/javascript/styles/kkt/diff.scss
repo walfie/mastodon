@@ -173,6 +173,15 @@ body.about-body {
   }
 }
 
+.simple_form .warning, .table-form .warning {
+  color: $white;
+  background: rgba($error-value-color, 0.8);
+
+  a {
+    color: $white;
+  }
+}
+
 // Components
 .status::before,
 .notification::before {
