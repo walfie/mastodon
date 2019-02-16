@@ -188,6 +188,14 @@ body.about-body {
   color: $white;
 }
 
+.compose__action-bar-dropdown .icon-button {
+  color: inherit;
+}
+
+.admin-wrapper .sidebar ul .simple-navigation-active-leaf a {
+  color: $white;
+}
+
 .status::before,
 .notification::before {
   content: "";
