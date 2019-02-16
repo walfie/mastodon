@@ -199,15 +199,6 @@ body.about-body {
   background: $muted-balloon-tail;
 }
 
-.status,
-.detailed-status,
-.activity-stream .detailed-status.light,
-.report-modal__statuses .status-check-box,
-.simple_form.new_user,
-{
-  @include panel-format();
-}
-
 .notification {
   @include panel-format($opacity:0.8);
   @include status-position();
@@ -227,17 +218,42 @@ body.about-body {
   padding: 20px;
 }
 
-.status {
-  @include status-position();
+// Why the heck is this even a matcher
+.public-layout .footer .grid .column-2 h4 a {
+  color: $darker-text-color;
 }
 
-.status__avatar {
+.public-layout .footer ul a {
+  color: $dark-text-color;
+}
+
+.public-layout .footer .brand svg path {
+  fill: default !important; // Set to some invalid color
+}
+
+.embed,
+.public-layout {
+  .footer {
+    color: $dark-text-color;
+  }
+
+  .status {
+    padding: 15px;
+  }
+}
+
+.status__avatar,
+.public-layout .status__avatar {
   height: 48px;
   left: 10px;
   position: absolute;
   top: 0;
   width: 48px;
   margin-left: -74px;
+}
+
+.status {
+  @include status-position();
 }
 
 .account__avatar,
@@ -362,8 +378,16 @@ body.about-body {
   }
 }
 
+.button.logo-button {
+  background: darken($ui-base-color, 10%);
+  &:hover {
+    background: $white;
+  }
+}
+
 // Change the background color of status__content__spoiler-link
 // this is such a mess
+.public-layout .header .nav-button,
 .reply-indicator__content .status__content__spoiler-link,
 .status__content .status__content__spoiler-link,
 .status__content__spoiler-link,
@@ -529,12 +553,12 @@ body.about-body {
 
 .account__action-bar {
   background: transparentize($white, 0.3);
-  border-top: 1px solid rgba($black, 0.6);
-  border-bottom: 1px solid rgba($black, 0.6);
+  border-top: 1px solid rgba($black, 0.3);
+  border-bottom: 1px solid rgba($black, 0.3);
 }
 
 .account__action-bar__tab {
-  border-left: 1px solid rgba($black, 0.6);
+  border-right: 1px solid rgba($black, 0.3);
 }
 
 .account-timeline__header {
@@ -589,11 +613,29 @@ body.about-body {
   margin-bottom: 10px;
 }
 
-.card .card__bio {
+.hero-widget__text {
   @include panel-format();
   border-radius: 0;
 }
 
+.status,
+.detailed-status,
+.activity-stream .detailed-status.light,
+.report-modal__statuses .status-check-box,
+.simple_form.new_user,
+.card .card__bio
+{
+  @include panel-format();
+}
+
+@media screen and (min-width: 600px) {
+  .public-layout .public-account-header__tabs__name h1,
+  .public-layout .public-account-header__tabs__name h1 small {
+    color: $white;
+  }
+}
+
+.public-account-header__image::after,
 .card::after {
   background: $black-background;
 }
@@ -671,6 +713,8 @@ body.about-body {
     &:first-child,
     &:last-child {
       &,
+      .status,
+      .detailed-status,
       .detailed-status.light,
       .status.light {
         border-radius: 8px !important;
