@@ -131,7 +131,7 @@ const updateSuggestionTags = (state, token) => {
 
   return state.merge({
     suggestions: state.get('tagHistory')
-      .filter(tag => tag.startsWith(prefix))
+      .filter(tag => tag.toLowerCase().startsWith(prefix.toLowerCase()))
       .slice(0, 4)
       .map(tag => '#' + tag),
     suggestion_token: token,
@@ -151,15 +151,8 @@ const insertEmoji = (state, position, emojiData, needsSpace) => {
 };
 
 const privacyPreference = (a, b) => {
-  if (a === 'direct' || b === 'direct') {
-    return 'direct';
-  } else if (a === 'private' || b === 'private') {
-    return 'private';
-  } else if (a === 'unlisted' || b === 'unlisted') {
-    return 'unlisted';
-  } else {
-    return 'public';
-  }
+  const order = ['public', 'unlisted', 'private', 'direct'];
+  return order[Math.max(order.indexOf(a), order.indexOf(b), 0)];
 };
 
 const hydrate = (state, hydratedState) => {

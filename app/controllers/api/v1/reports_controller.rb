@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Api::V1::ReportsController < Api::BaseController
-  before_action -> { doorkeeper_authorize! :read }, except: [:create]
-  before_action -> { doorkeeper_authorize! :write }, only:  [:create]
+  before_action -> { doorkeeper_authorize! :read, :'read:reports' }, except: [:create]
+  before_action -> { doorkeeper_authorize! :write, :'write:reports' }, only: [:create]
   before_action :require_user!
 
   respond_to :json
@@ -27,7 +27,7 @@ class Api::V1::ReportsController < Api::BaseController
   private
 
   def reported_status_ids
-    Status.find(status_ids).pluck(:id)
+    reported_account.statuses.find(status_ids).pluck(:id)
   end
 
   def status_ids
