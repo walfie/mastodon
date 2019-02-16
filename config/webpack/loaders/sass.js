@@ -1,7 +1,5 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const minimize = env.NODE_ENV === 'production';
-
 module.exports = {
   test: /\.s?css$/i,
   use: [
@@ -23,4 +21,3 @@ module.exports = {
     },
   ],
 };
-
