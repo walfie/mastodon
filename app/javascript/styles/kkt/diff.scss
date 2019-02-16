@@ -183,6 +183,19 @@ body.about-body {
 }
 
 // Components
+.status-card__actions button,
+.status-card__actions a {
+  color: $white;
+}
+
+.compose__action-bar-dropdown .icon-button {
+  color: inherit;
+}
+
+.admin-wrapper .sidebar ul .simple-navigation-active-leaf a {
+  color: $white;
+}
+
 .status::before,
 .notification::before {
   content: "";
@@ -833,5 +846,10 @@ body.about-body {
 
 .list-editor__accounts .account {
   background: transparentize(darken(desaturate($ui-highlight-color, 11%), 19%), 0.4);
+}
+
+// Admin page
+.dashboard__widgets a:not(.name-tag) {
+  color: $ui-primary-color;
 }
 

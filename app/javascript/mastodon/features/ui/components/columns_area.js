@@ -33,10 +33,10 @@ const messages = defineMessages({
   publish: { id: 'compose_form.publish', defaultMessage: 'Toot' },
 });
 
-const shouldHideFAB = path => path.match(/^\/statuses\//);
+const shouldHideFAB = path => path.match(/^\/statuses\/|^\/search|^\/getting-started/);
 
-@component => injectIntl(component, { withRef: true })
-export default class ColumnsArea extends ImmutablePureComponent {
+export default @(component => injectIntl(component, { withRef: true }))
+class ColumnsArea extends ImmutablePureComponent {
 
   static contextTypes = {
     router: PropTypes.object.isRequired,

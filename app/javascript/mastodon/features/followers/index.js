@@ -22,8 +22,8 @@ const mapStateToProps = (state, props) => ({
   hasMore: !!state.getIn(['user_lists', 'followers', props.params.accountId, 'next']),
 });
 
-@connect(mapStateToProps)
-export default class Followers extends ImmutablePureComponent {
+export default @connect(mapStateToProps)
+class Followers extends ImmutablePureComponent {
 
   static propTypes = {
     params: PropTypes.object.isRequired,
@@ -73,7 +73,6 @@ export default class Followers extends ImmutablePureComponent {
           shouldUpdateScroll={shouldUpdateScroll}
           prepend={<HeaderContainer accountId={this.props.params.accountId} hideTabs />}
           alwaysPrepend
-          alwaysShowScrollbar
           emptyMessage={emptyMessage}
         >
           {accountIds.map(id =>

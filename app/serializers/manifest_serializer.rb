@@ -11,17 +11,14 @@ class ManifestSerializer < ActiveModel::Serializer
 
   def name
     object.site_title
-    "ｷﾗｷﾗｯﾀｰ"
   end
 
   def short_name
     object.site_title
-    "ｷﾗｷﾗｯﾀｰ"
   end
 
   def description
     strip_tags(object.site_description.presence || I18n.t('about.about_mastodon_html'))
-    "アイ！カツ！" 
   end
 
   def icons

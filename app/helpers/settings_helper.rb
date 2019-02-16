@@ -8,6 +8,7 @@ module SettingsHelper
     bg: 'Български',
     ca: 'Català',
     co: 'Corsu',
+    cs: 'Čeština',
     cy: 'Cymraeg',
     da: 'Dansk',
     de: 'Deutsch',
@@ -29,6 +30,7 @@ module SettingsHelper
     ja: '日本語',
     ka: 'ქართული',
     ko: '한국어',
+    ml: 'മലയാളം',
     nl: 'Nederlands',
     no: 'Norsk',
     oc: 'Occitan',
@@ -63,12 +65,6 @@ module SettingsHelper
 
   def hash_to_object(hash)
     HashObject.new(hash)
-  end
-
-  SITE_THEMES = ['default', 'kkt'].freeze
-
-  def site_themes
-    SITE_THEMES
   end
 
   def session_device_icon(session)

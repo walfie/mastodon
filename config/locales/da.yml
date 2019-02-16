@@ -1,7 +1,7 @@
 ---
 da:
   about:
-    about_hashtag_html: Disse er offentlige toots der indeholder tagget <strong>#%{hashtag}</strong>. Du kan interagere med dem hvis du har en konto hvor som helst i fediverset.
+    about_hashtag_html: Disse er offentlige trut der indeholder tagget <strong>#%{hashtag}</strong>. Du kan interagere med dem hvis du har en konto hvor som helst i fediverset.
     about_mastodon_html: Mastodon er et socialt netværk der er baseret på åbne web protokoller og frit, open-source source software. Der er decentraliseret ligesom e-mail tjenester.
     about_this: Om
     administered_by: 'Administreret af:'
@@ -20,7 +20,7 @@ da:
       humane_approach_title: En mere human tilgang
       not_a_product_body: Mastodon er ikke et kommercielt netværk. Ingen reklamer, ingen datamining, ingen indhegnet haver. Der er ingen central regering.
       not_a_product_title: Du er en person, ikke et produkt
-      real_conversation_body: Med 500 tegn til din rådighed og understøttelse af granulært indhold og multimedie advarsler, kan du udtrykke dig på en hvilken som helst måde du ønsker.
+      real_conversation_body: Med 500 tegn til din rådighed og understøttelse af granulært indhold og medie advarsler, kan du udtrykke dig på en hvilken som helst måde du ønsker.
       real_conversation_title: Bygget til rigtige samtaler
       within_reach_body: Adskillige apps for iOS, Android og andre platforme takket være et udviklervenligt API økosystem tillader dig at holde kontakten med dine venner hvor som helst.
       within_reach_title: Altid indenfor rækkevidde
@@ -48,7 +48,8 @@ da:
       other: Følgere
     following: Følger
     joined: Tilmeldt den %{date}
-    media: Multimedia
+    link_verified_on: Ejerskabet af dette link blev tjekket den %{date}
+    media: Medier
     moved_html: "%{name} er flyttet til %{new_profile_link}:"
     network_hidden: Denne information er ikke tilgængelig
     nothing_here: Der er intet her!
@@ -68,6 +69,8 @@ da:
       moderator: Moderator
     unfollow: Følg ikke længere
   admin:
+    account_actions:
+      action: Udfør handling
     account_moderation_notes:
       create: Læg en note
       created_msg: Moderator notat succesfuldt oprettet!
@@ -110,7 +113,7 @@ da:
         remote: Fjernt
         title: Placering
       login_status: Status på login
-      media_attachments: Multimedie bilag
+      media_attachments: Medie bilag
       memorialize: Omdan til et memoriam
       moderation:
         all: Alle
@@ -121,12 +124,8 @@ da:
       most_recent_activity: Seneste aktivitet
       most_recent_ip: Senest IP
       not_subscribed: Ikke abonneret
-      order:
-        alphabetic: Alfabetisk
-        most_recent: Seneste
-        title: Rækkefølge
       outbox_url: Link til udgående
-      perform_full_suspension: Udfør fuld udelukkelse
+      perform_full_suspension: Udeluk
       profile_url: Link til profil
       promote: Forfrem
       protocol: Protokol
@@ -152,11 +151,12 @@ da:
       shared_inbox_url: Link til delt indbakke
       show:
         created_reports: Anmeldelser oprettet af denne konto
-        report: anmeld
         targeted_reports: Anmeldelser fra denne konto
       silence: Dæmp
+      silenced: Dæmpet
       statuses: Statusser
       subscribe: Abonner
+      suspended: Udelukket
       title: Konti
       unconfirmed_email: Ikke-bekræftet email
       undo_silenced: Fortryd dæmpning
@@ -256,13 +256,9 @@ da:
           silence: Dæmp
           suspend: Udeluk
         title: Ny domæne blokering
-      reject_media: Afvis multimedie filer
+      reject_media: Afvis medie filer
       reject_media_hint: Fjerner lokalt lagrede multimedie filer og nægter at hente nogen i fremtiden. Irrelevant for udelukkelser
-      severities:
-        noop: Ingen
-        silence: Dæmp
-        suspend: Udeluk
-      severity: Alvorlighed
+      reject_reports: Afvis anmeldelser
       show:
         affected_accounts:
           one: En konto i databasen påvirket
@@ -272,7 +268,6 @@ da:
           suspend: Fjern udelukkelsen af alle eksisterende konti fra dette domæne
         title: Annuller domæne blokeringen for domænet %{domain}
         undo: Fortryd
-      title: Domæne blokeringer
       undo: Fortryd
     email_domain_blocks:
       add_new: Tilføj ny
@@ -284,11 +279,9 @@ da:
         create: Tilføj domæne
         title: Ny email blokade opslag
       title: Email sortliste
+    followers:
+      back_to_account: Tilbage til konto
     instances:
-      account_count: Kendte konti
-      domain_name: Domæne
-      reset: Nulstil
-      search: Søg
       title: Kendte instanser
     invites:
       deactivate_all: Deaktiver alle
@@ -300,8 +293,13 @@ da:
       title: Invitationer
     relays:
       add_new: Tilføj nyt relay
+      delete: Slet
       description_html: Et <strong>federation relay</strong> er en mellemleds server der udveksler store mængder af offentlige trut mellem servere der abonnerer på og offentliggør til det. <strong>Det kan hjælpe små og mellemstore servere opdage indhold fra fediverset</strong>, hvilket der ellers ville kræve at lokale brugere manuelt følger andre folk på fjerne servere.
+      disable: Deaktiver
+      disabled: Deaktiveret
+      enable: Aktiver
       enable_hint: Når dette er aktiveret, vil serveren abonnere på alle offentlige trut fra dette relay, og vil begynde at sende offentlige trut fra denne server dertil.
+      enabled: Aktiveret
       inbox_url: Link til relay
       pending: Venter på godkendelse fra relæet
       save_and_enable: Gem og aktiver
@@ -322,7 +320,6 @@ da:
       comment:
         none: Ingen
       created_at: Anmeldt
-      id: ID
       mark_as_resolved: Marker som værende løst
       mark_as_unresolved: Marker som værende uløst
       notes:
@@ -333,20 +330,15 @@ da:
         placeholder: Beskriv hvilke handlinger der er blevet udført, eller andre relevante opdateringer...
       reopen: Genåben anmeldelse
       report: 'Anmeldelse #%{id}'
-      report_contents: Indhold
       reported_account: Anmeldt konto
       reported_by: Anmeldt af
       resolved: Løst
       resolved_msg: Anmeldelse er sat til at være løst!
-      silence_account: Dæmp konto
       status: Status
-      suspend_account: Udeluk konto
-      target: Mål
       title: Anmeldelser
       unassign: Utildel
       unresolved: Uløst
       updated_at: Opdateret
-      view: Se
     settings:
       activity_api_enabled:
         desc_html: Antal af lokalt opslåede statusser, aktive brugere, og nye registreringer i ugentlige opdelinger
@@ -428,12 +420,9 @@ da:
       last_delivery: Sidste levering
       title: Websub
       topic: Emne
-    suspensions:
-      bad_acct_msg: Bekræftelsværdien stemte ikke overens. Er du ved at udelukke den rigtige konto?
-      hint_html: 'For at bekræfte udelukkelsen af kontoen, indtast venligst %{value} i nedenstående felt:'
-      proceed: Fortsæt
-      title: Udeluk %{acct}
-      warning_html: 'Udelukkelse af denne konto vil <strong>uigenkaldeligt</strong> slette al data fra denne konto, hvilket indebærer:'
+    tags:
+      accounts: Kontoer
+      hidden: Skjult
     title: Administration
   admin_mailer:
     new_report:
@@ -523,7 +512,7 @@ da:
     '500':
       content: Beklager men der gik noget galt i vores ende.
       title: Siden er ikke korrekt
-    noscript_html: For at bruge Mastodon web applikationen, aktiver JavaScript. Alternativt kan du prøve en af disse <a href="https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/Apps.md">apps</a> til Mastodon for din platform.
+    noscript_html: For at bruge Mastodon web applikationen, aktiver JavaScript. Alternativt kan du prøve en af disse <a href="%{apps_path}">apps</a> til Mastodon for din platform.
   exports:
     archive_takeout:
       date: Dato
@@ -571,6 +560,7 @@ da:
     resources: Ressourcer
   generic:
     changes_saved_msg: Ændringerne blev gemt!
+    copy: Kopier
     save_changes: Gem ændringer
     validation_errors:
       one: Der er noget der ikke er helt som det bør være! Tag lige et kig på følgende fejl forneden
@@ -682,9 +672,6 @@ da:
     no_account_html: Har du ikke en konto? Du kan <a href='%{sign_up_path}' target='_blank'>oprette dig her</a>
     proceed: Fortsæt for at følge
     prompt: 'Du er ved at følge:'
-  remote_interaction:
-    proceed: Fortsæt for at interagere
-    prompt: 'Du ønsker at interagere med dette trut:'
   remote_unfollow:
     error: Fejl
     title: Titel
@@ -736,7 +723,7 @@ da:
     delete: Sletning af konto
     development: Udvikling
     edit_profile: Rediger profil
-    export: Data exportering
+    export: Data eksportering
     followers: Godkendte følgere
     import: Importer
     migrate: Konto migrering
@@ -824,7 +811,6 @@ da:
       review_preferences_action: Ændre præferencer
       review_preferences_step: Vær sikker på at sætte dine præferencer, så som hvilke emails du kunne tænke dig at modtage, eller hvilket niveau af privatliv der skal være standard for dine opslag. Hvis du kunne tænke dig ikke at blive køresyg, kan du vælge at aktivere automatisk afspilning af GIFfer.
       subject: Velkommen til Mastodon
-      tip_bridge_html: Hvis du kommer fra Twitter, kan du finde dine venner på Mastodon ved at bruge <a href="%{bridge_url}">bridge appen</a>. Den virker dog kun hvis de også bruger bridge appen!
       tip_federated_timeline: Den delte tidslinje er et brandslange agtigt indblik over Mastodon netværket. Men det inkluderer kun folk dine naboer abonnerer på, så den er ikke fuldendt.
       tip_following: Du følger som standard administratoren(e) for den server du er på. For at finde flere folk, tjek både den lokale og fælles tidslinje.
       tip_local_timeline: Den lokale tidslinje er et have af folk i %{instance}. Disse er dine umiddelbare naboer!
