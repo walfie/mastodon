@@ -49,7 +49,7 @@ class Form::AdminSettings
 
   attr_accessor(*KEYS)
 
-  validates :site_short_description, :site_description, html: { wrap_with: :p }
+  validates :site_short_description, :site_description, html: { wrap_with: :div }
   validates :site_extended_description, :site_terms, :closed_registrations_message, html: true
   validates :registrations_mode, inclusion: { in: %w(open approved none) }
   validates :min_invite_role, inclusion: { in: %w(disabled user moderator admin) }

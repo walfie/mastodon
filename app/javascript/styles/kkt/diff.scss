@@ -615,6 +615,11 @@ body.about-body {
   @include panel-format();
 }
 
+.landing .hero-widget__text {
+  padding-bottom: 10px;
+  background: none;
+}
+
 .account__header__bar {
   border-radius: 0;
 }
@@ -685,6 +690,7 @@ body.about-body {
   background: rgba($black, 0.2);
 }
 
+.relationship-tag,
 .spoiler-button__overlay__label {
   color: $white;
 }
