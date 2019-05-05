@@ -24,7 +24,16 @@ class DomainBlock < ApplicationRecord
   has_many :accounts, foreign_key: :domain, primary_key: :domain
   delegate :count, to: :accounts, prefix: true
 
+  scope :matches_domain, ->(value) { where(arel_table[:domain].matches("%#{value}%")) }
+
   def self.blocked?(domain)
     where(domain: domain, severity: :suspend).exists?
+  end
+
+  def stricter_than?(other_block)
+    return true if suspend?
+    return false if other_block.suspend? && (silence? || noop?)
+    return false if other_block.silence? && noop?
+    (reject_media || !other_block.reject_media) && (reject_reports || !other_block.reject_reports)
   end
 end

@@ -227,10 +227,6 @@ body.about-body {
   color: $dark-text-color;
 }
 
-.simple_form.new_user {
-  padding: 20px;
-}
-
 // Why the heck is this even a matcher
 .public-layout .footer .grid .column-2 h4 a {
   color: $darker-text-color;
@@ -564,26 +560,8 @@ body.about-body {
   padding-bottom: 0 !important;
 }
 
-.account__action-bar {
-  background: transparentize($white, 0.3);
-  border-top: 1px solid rgba($black, 0.3);
-  border-bottom: 1px solid rgba($black, 0.3);
-}
-
-.account__action-bar__tab {
-  border-right: 1px solid rgba($black, 0.3);
-}
-
 .account-timeline__header {
   padding-bottom: 5px;
-}
-
-.account__header {
-  background: inherit;
-
-  & > div {
-    background: $black-background;
-  }
 }
 
 .account__header .account__header__display-name,
@@ -626,19 +604,32 @@ body.about-body {
   margin-bottom: 10px;
 }
 
-.hero-widget__text {
-  @include panel-format();
-  border-radius: 0;
-}
-
 .status,
 .detailed-status,
 .activity-stream .detailed-status.light,
 .report-modal__statuses .status-check-box,
-.simple_form.new_user,
-.card .card__bio
-{
+.card .card__bio,
+.box-widget,
+.account__header__bar,
+.hero-widget {
   @include panel-format();
+}
+
+.landing .hero-widget__text {
+  padding-bottom: 10px;
+  background: none;
+}
+
+.account__header__bar {
+  border-radius: 0;
+}
+
+.poll__chart {
+  background: lighten($ui-highlight-color, 10%);
+}
+
+.landing .hero-widget__footer {
+  background: none;
 }
 
 @media screen and (min-width: 600px) {
@@ -699,9 +690,9 @@ body.about-body {
   background: rgba($black, 0.2);
 }
 
-.media-spoiler {
-  background: rgba($black, 0.2);
-  color: $darker-text-color;
+.relationship-tag,
+.spoiler-button__overlay__label {
+  color: $white;
 }
 
 .detailed-status__action-bar {
