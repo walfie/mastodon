@@ -685,9 +685,8 @@ body.about-body {
   background: rgba($black, 0.2);
 }
 
-.media-spoiler {
-  background: rgba($black, 0.2);
-  color: $darker-text-color;
+.spoiler-button__overlay__label {
+  color: $white;
 }
 
 .detailed-status__action-bar {
