@@ -569,9 +569,13 @@ body.about-body {
   color: $white;
 }
 
+.account__header__bio .account__header__fields a {
+  color: inherit;
+}
+
 .account__header__content,
 .account__header .account__header__content {
-  color: lighten(saturate(adjust-hue($dark-text-color, -17deg), 12%), 35%);
+  color: inherit;
 
   .hashtag, .mention {
     color: $secondary-text-color;
