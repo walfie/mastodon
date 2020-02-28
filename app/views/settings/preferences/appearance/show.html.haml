@@ -12,14 +12,15 @@
     .flash-message{ style: "text-align: unset; color: unset" }
       #{t 'appearance.localization.body'} #{content_tag(:a, t('appearance.localization.guide_link_text'), href: t('appearance.localization.guide_link'), target: "_blank", rel: "noopener", style: "text-decoration: underline")}
 
-  %h4= t 'appearance.advanced_web_interface'
+  -# Disable single-column layout
+    %h4= t 'appearance.advanced_web_interface'
 
-  %p.hint= t 'appearance.advanced_web_interface_hint'
+    %p.hint= t 'appearance.advanced_web_interface_hint'
 
-  .fields-group
-    = f.input :setting_advanced_layout, as: :boolean, wrapper: :with_label, hint: false
+    .fields-group
+      = f.input :setting_advanced_layout, as: :boolean, wrapper: :with_label, hint: false
 
-  %h4= t 'appearance.animations_and_accessibility'
+    %h4= t 'appearance.animations_and_accessibility'
 
   .fields-group
     = f.input :setting_use_pending_items, as: :boolean, wrapper: :with_label
