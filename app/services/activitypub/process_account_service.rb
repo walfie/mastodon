@@ -2,11 +2,12 @@
 
 class ActivityPub::ProcessAccountService < BaseService
   include JsonLdHelper
+  include DomainControlHelper
 
   # Should be called with confirmed valid JSON
   # and WebFinger-resolved username and domain
   def call(username, domain, json, options = {})
-    return if json['inbox'].blank? || unsupported_uri_scheme?(json['id'])
+    return if json['inbox'].blank? || unsupported_uri_scheme?(json['id']) || domain_not_allowed?(domain)
 
     @options     = options
     @json        = json
@@ -17,9 +18,10 @@ class ActivityPub::ProcessAccountService < BaseService
 
     RedisLock.acquire(lock_options) do |lock|
       if lock.acquired?
-        @account        = Account.find_remote(@username, @domain)
-        @old_public_key = @account&.public_key
-        @old_protocol   = @account&.protocol
+        @account          = Account.remote.find_by(uri: @uri) if @options[:only_key]
+        @account        ||= Account.find_remote(@username, @domain)
+        @old_public_key   = @account&.public_key
+        @old_protocol     = @account&.protocol
 
         create_account if @account.nil?
         update_account
@@ -50,12 +52,12 @@ class ActivityPub::ProcessAccountService < BaseService
 
   def create_account
     @account = Account.new
-    @account.protocol    = :activitypub
-    @account.username    = @username
-    @account.domain      = @domain
-    @account.suspended   = true if auto_suspend?
-    @account.silenced    = true if auto_silence?
-    @account.private_key = nil
+    @account.protocol     = :activitypub
+    @account.username     = @username
+    @account.domain       = @domain
+    @account.private_key  = nil
+    @account.suspended_at = domain_block.created_at if auto_suspend?
+    @account.silenced_at  = domain_block.created_at if auto_silence?
   end
 
   def update_account
@@ -82,6 +84,7 @@ class ActivityPub::ProcessAccountService < BaseService
     @account.fields                  = property_values || {}
     @account.also_known_as           = as_array(@json['alsoKnownAs'] || []).map { |item| value_or_id(item) }
     @account.actor_type              = actor_type
+    @account.discoverable            = @json['discoverable'] || false
   end
 
   def set_fetchable_attributes!
@@ -205,7 +208,7 @@ class ActivityPub::ProcessAccountService < BaseService
 
   def domain_block
     return @domain_block if defined?(@domain_block)
-    @domain_block = DomainBlock.find_by(domain: @domain)
+    @domain_block = DomainBlock.rule_for(@domain)
   end
 
   def key_changed?

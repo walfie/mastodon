@@ -11,7 +11,7 @@ import { showAlertForError } from './alerts';
 import { showAlert } from './alerts';
 import { defineMessages } from 'react-intl';
 
-let cancelFetchComposeSuggestionsAccounts;
+let cancelFetchComposeSuggestionsAccounts, cancelFetchComposeSuggestionsTags;
 
 export const COMPOSE_CHANGE          = 'COMPOSE_CHANGE';
 export const COMPOSE_SUBMIT_REQUEST  = 'COMPOSE_SUBMIT_REQUEST';
@@ -63,6 +63,14 @@ const messages = defineMessages({
   uploadErrorPoll:  { id: 'upload_error.poll', defaultMessage: 'File upload not allowed with polls.' },
 });
 
+const COMPOSE_PANEL_BREAKPOINT = 600 + (285 * 1) + (10 * 1);
+
+export const ensureComposeIsVisible = (getState, routerHistory) => {
+  if (!getState().getIn(['compose', 'mounted']) && window.innerWidth < COMPOSE_PANEL_BREAKPOINT) {
+    routerHistory.push('/statuses/new');
+  }
+};
+
 export function changeCompose(text) {
   return {
     type: COMPOSE_CHANGE,
@@ -77,9 +85,7 @@ export function replyCompose(status, routerHistory) {
       status: status,
     });
 
-    if (!getState().getIn(['compose', 'mounted'])) {
-      routerHistory.push('/statuses/new');
-    }
+    ensureComposeIsVisible(getState, routerHistory);
   };
 };
 
@@ -102,9 +108,7 @@ export function mentionCompose(account, routerHistory) {
       account: account,
     });
 
-    if (!getState().getIn(['compose', 'mounted'])) {
-      routerHistory.push('/statuses/new');
-    }
+    ensureComposeIsVisible(getState, routerHistory);
   };
 };
 
@@ -115,9 +119,7 @@ export function directCompose(account, routerHistory) {
       account: account,
     });
 
-    if (!getState().getIn(['compose', 'mounted'])) {
-      routerHistory.push('/statuses/new');
-    }
+    ensureComposeIsVisible(getState, routerHistory);
   };
 };
 
@@ -137,7 +139,7 @@ export function submitCompose(routerHistory) {
       in_reply_to_id: getState().getIn(['compose', 'in_reply_to'], null),
       media_ids: media.map(item => item.get('id')),
       sensitive: getState().getIn(['compose', 'sensitive']),
-      spoiler_text: getState().getIn(['compose', 'spoiler_text'], ''),
+      spoiler_text: getState().getIn(['compose', 'spoiler']) ? getState().getIn(['compose', 'spoiler_text'], '') : '',
       visibility: getState().getIn(['compose', 'privacy']),
       poll: getState().getIn(['compose', 'poll'], null),
     }, {
@@ -203,10 +205,11 @@ export function uploadCompose(files) {
   return function (dispatch, getState) {
     const uploadLimit = 4;
     const media  = getState().getIn(['compose', 'media_attachments']);
+    const pending  = getState().getIn(['compose', 'pending_media_attachments']);
     const progress = new Array(files.length).fill(0);
     let total = Array.from(files).reduce((a, v) => a + v.size, 0);
 
-    if (files.length + media.size > uploadLimit) {
+    if (files.length + media.size + pending > uploadLimit) {
       dispatch(showAlert(undefined, messages.uploadErrorLimit));
       return;
     }
@@ -232,7 +235,7 @@ export function uploadCompose(files) {
             progress[i] = loaded;
             dispatch(uploadComposeProgress(progress.reduce((a, v) => a + v, 0), total));
           },
-        }).then(({ data }) => dispatch(uploadComposeSuccess(data)));
+        }).then(({ data }) => dispatch(uploadComposeSuccess(data, f)));
       }).catch(error => dispatch(uploadComposeFail(error)));
     };
   };
@@ -287,10 +290,11 @@ export function uploadComposeProgress(loaded, total) {
   };
 };
 
-export function uploadComposeSuccess(media) {
+export function uploadComposeSuccess(media, file) {
   return {
     type: COMPOSE_UPLOAD_SUCCESS,
     media: media,
+    file: file,
     skipLoading: true,
   };
 };
@@ -323,10 +327,12 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, token) => 
   if (cancelFetchComposeSuggestionsAccounts) {
     cancelFetchComposeSuggestionsAccounts();
   }
+
   api(getState).get('/api/v1/accounts/search', {
     cancelToken: new CancelToken(cancel => {
       cancelFetchComposeSuggestionsAccounts = cancel;
     }),
+
     params: {
       q: token.slice(1),
       resolve: false,
@@ -347,9 +353,33 @@ const fetchComposeSuggestionsEmojis = (dispatch, getState, token) => {
   dispatch(readyComposeSuggestionsEmojis(token, results));
 };
 
-const fetchComposeSuggestionsTags = (dispatch, getState, token) => {
+const fetchComposeSuggestionsTags = throttle((dispatch, getState, token) => {
+  if (cancelFetchComposeSuggestionsTags) {
+    cancelFetchComposeSuggestionsTags();
+  }
+
   dispatch(updateSuggestionTags(token));
-};
+
+  api(getState).get('/api/v2/search', {
+    cancelToken: new CancelToken(cancel => {
+      cancelFetchComposeSuggestionsTags = cancel;
+    }),
+
+    params: {
+      type: 'hashtags',
+      q: token.slice(1),
+      resolve: false,
+      limit: 4,
+      exclude_unreviewed: true,
+    },
+  }).then(({ data }) => {
+    dispatch(readyComposeSuggestionsTags(token, data.hashtags));
+  }).catch(error => {
+    if (!isCancel(error)) {
+      dispatch(showAlertForError(error));
+    }
+  });
+}, 200, { leading: true, trailing: true });
 
 export function fetchComposeSuggestions(token) {
   return (dispatch, getState) => {
@@ -383,20 +413,26 @@ export function readyComposeSuggestionsAccounts(token, accounts) {
   };
 };
 
-export function selectComposeSuggestion(position, token, suggestion) {
+export const readyComposeSuggestionsTags = (token, tags) => ({
+  type: COMPOSE_SUGGESTIONS_READY,
+  token,
+  tags,
+});
+
+export function selectComposeSuggestion(position, token, suggestion, path) {
   return (dispatch, getState) => {
     let completion, startPosition;
 
-    if (typeof suggestion === 'object' && suggestion.id) {
+    if (suggestion.type === 'emoji') {
       completion    = suggestion.native || suggestion.colons;
       startPosition = position - 1;
 
       dispatch(useEmoji(suggestion));
-    } else if (suggestion[0] === '#') {
-      completion    = suggestion;
+    } else if (suggestion.type === 'hashtag') {
+      completion    = `#${suggestion.name}`;
       startPosition = position - 1;
-    } else {
-      completion    = getState().getIn(['accounts', suggestion, 'acct']);
+    } else if (suggestion.type === 'account') {
+      completion    = getState().getIn(['accounts', suggestion.id, 'acct']);
       startPosition = position;
     }
 
@@ -405,6 +441,7 @@ export function selectComposeSuggestion(position, token, suggestion) {
       position: startPosition,
       token,
       completion,
+      path,
     });
   };
 };

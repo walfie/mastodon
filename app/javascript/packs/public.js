@@ -2,6 +2,7 @@ import escapeTextContentForBrowser from 'escape-html';
 import loadPolyfills from '../mastodon/load_polyfills';
 import ready from '../mastodon/ready';
 import { start } from '../mastodon/common';
+import loadKeyboardExtensions from '../mastodon/load_keyboard_extensions';
 
 start();
 
@@ -31,10 +32,10 @@ function main() {
   const React = require('react');
   const ReactDOM = require('react-dom');
   const Rellax = require('rellax');
-  const createHistory = require('history').createBrowserHistory;
+  const { createBrowserHistory } = require('history');
 
   const scrollToDetailedStatus = () => {
-    const history = createHistory();
+    const history = createBrowserHistory();
     const detailedStatuses = document.querySelectorAll('.public-layout .detailed-status');
     const location = history.location;
 
@@ -42,6 +43,12 @@ function main() {
       detailedStatuses[0].scrollIntoView();
       history.replace(location.pathname, { ...location.state, scrolledToDetailedStatus: true });
     }
+  };
+
+  const getEmojiAnimationHandler = (swapTo) => {
+    return ({ target }) => {
+      target.src = target.getAttribute(swapTo);
+    };
   };
 
   ready(() => {
@@ -75,7 +82,7 @@ function main() {
       content.textContent = timeAgoString({
         formatMessage: ({ id, defaultMessage }, values) => (new IntlMessageFormat(messages[id] || defaultMessage, locale)).format(values),
         formatDate: (date, options) => (new Intl.DateTimeFormat(locale, options)).format(date),
-      }, datetime, now, now.getFullYear());
+      }, datetime, now, now.getFullYear(), content.getAttribute('datetime').includes('T'));
     });
 
     const reactComponents = document.querySelectorAll('[data-component]');
@@ -109,13 +116,8 @@ function main() {
       new Rellax('.parallax', { speed: -1 });
     }
 
-    if (document.body.classList.contains('with-modals')) {
-      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-      const scrollbarWidthStyle = document.createElement('style');
-      scrollbarWidthStyle.id = 'scrollbar-width';
-      document.head.appendChild(scrollbarWidthStyle);
-      scrollbarWidthStyle.sheet.insertRule(`body.with-modals--active { margin-right: ${scrollbarWidth}px; }`, 0);
-    }
+    delegate(document, '.custom-emoji', 'mouseover', getEmojiAnimationHandler('data-original'));
+    delegate(document, '.custom-emoji', 'mouseout', getEmojiAnimationHandler('data-static'));
   });
 
   delegate(document, '.webapp-btn', 'click', ({ target, button }) => {
@@ -126,15 +128,15 @@ function main() {
     return false;
   });
 
-  delegate(document, '.status__content__spoiler-link', 'click', ({ target }) => {
-    const contentEl = target.parentNode.parentNode.querySelector('.e-content');
+  delegate(document, '.status__content__spoiler-link', 'click', function() {
+    const contentEl = this.parentNode.parentNode.querySelector('.e-content');
 
     if (contentEl.style.display === 'block') {
       contentEl.style.display = 'none';
-      target.parentNode.style.marginBottom = 0;
+      this.parentNode.style.marginBottom = 0;
     } else {
       contentEl.style.display = 'block';
-      target.parentNode.style.marginBottom = null;
+      this.parentNode.style.marginBottom = null;
     }
 
     return false;
@@ -178,7 +180,7 @@ function main() {
     return ({ target }) => {
       const swapSrc = target.getAttribute(swapTo);
       //only change the img source if autoplay is off and the image src is actually different
-      if(target.getAttribute('data-autoplay') === 'false' && target.src !== swapSrc) {
+      if(target.getAttribute('data-autoplay') !== 'true' && target.src !== swapSrc) {
         target.src = swapSrc;
       }
     };
@@ -237,8 +239,21 @@ function main() {
 
     input.readonly = oldReadOnly;
   });
+
+  delegate(document, '.sidebar__toggle__icon', 'click', () => {
+    const target = document.querySelector('.sidebar ul');
+
+    if (target.style.display === 'block') {
+      target.style.display = 'none';
+    } else {
+      target.style.display = 'block';
+    }
+  });
 }
 
-loadPolyfills().then(main).catch(error => {
-  console.error(error);
-});
+loadPolyfills()
+  .then(main)
+  .then(loadKeyboardExtensions)
+  .catch(error => {
+    console.error(error);
+  });
