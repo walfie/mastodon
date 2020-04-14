@@ -83,7 +83,7 @@ body.app-body,
 .simple_form .block-button,
 .simple_form .button,
 .simple_form button {
-  color: $white;
+  color: $primary-text-color;
 }
 
 .simple_form {
@@ -206,6 +206,10 @@ body.about-body {
 .admin-wrapper {
   .sidebar {
     background: rgba($ui-base-lighter-color, 0.15);
+
+    ul a {
+      color: darken($darker-text-color, 20%);
+    }
   }
 
   .sidebar-wrapper {
@@ -305,7 +309,7 @@ body.about-body {
     border-bottom: solid 2px $panel-shadow;
 
     .nav-link {
-      color: $darker-text-color;
+      color: $primary-text-color;
       text-shadow: $panel-box-shadow;
 
       &.nav-button {
@@ -439,6 +443,7 @@ body.about-body {
     border-bottom: solid 2px $panel-shadow;
     margin-bottom: 0px;
 
+
     a {
       &:hover {
         background: transparentize($white, 0.3);
@@ -450,6 +455,11 @@ body.about-body {
   &__tab {
     padding: 15px 4px;
     text-shadow: $panel-box-shadow;
+    color: $primary-text-color;
+
+    &:hover {
+      color: $darker-text-color;
+    }
   }
 
   &__inner {
@@ -474,7 +484,7 @@ body.about-body {
   border-bottom: 2px solid $panel-shadow;
 
   &__link {
-    color: $darker-text-color;
+    color: $primary-text-color;
     text-shadow: $panel-box-shadow;
     border-bottom: 0;
 
@@ -483,7 +493,7 @@ body.about-body {
     }
 
     &.active {
-      color: inherit;
+      color: $darker-text-color;
       border-bottom: 0;
       text-shadow: none;
       background: transparentize($white, 0.5);
@@ -722,11 +732,11 @@ body.about-body {
 
 .navigation-bar {
   background: transparentize(darken(desaturate($ui-primary-color, 11%), 18%), 0.4);
-  color: lighten(desaturate($ui-highlight-color, 26%), 12%);
+  color: darken($ui-secondary-color,15%);
   font-weight: bold;
 
   strong {
-    color: lighten(desaturate($ui-highlight-color, 19%), 21%);
+    color: lighten($primary-text-color,10%);
   }
 }
 
